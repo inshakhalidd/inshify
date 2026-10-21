@@ -47,6 +47,14 @@
   var cards = document.querySelectorAll("#work-grid .card");
   var status = document.getElementById("filter-status");
   chips.forEach(function (chip) {
+    var key = chip.getAttribute("data-filter");
+    var n = Array.prototype.filter.call(cards, function (card) {
+      return key === "all" || card.getAttribute("data-tags").split(" ").indexOf(key) > -1;
+    }).length;
+    var badge = chip.querySelector(".chip-n");
+    if (badge) badge.textContent = n;
+  });
+  chips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       var key = chip.getAttribute("data-filter");
       var shown = 0;

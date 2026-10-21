@@ -9,8 +9,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = ROOT;
 const YEAR = 2026;
 
+// A plain "&" between words stays a real "&" (valid HTML5); only an "&" that could start an entity is escaped.
 const esc = (s) =>
-  String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  String(s)
+    .replace(/&(?!\s)/g, "&amp;")
+    .replace(/[<>"']/g, (c) => ({ "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const isPlaceholder = (s) => !s || /^\[.*\]$/.test(s.trim());
 const fullLabel = (p) => (p.sublabel ? `${p.label} · ${p.sublabel}` : p.label);
 const num = (i) => String(i + 1).padStart(2, "0");
@@ -171,12 +174,6 @@ function badgeKind(p) {
   if (/service/i.test(p.label)) return "service";
   return "concept"; // Brand identity / Logo concept projects
 }
-// The filter categories a card appears under (except "Paid & internship", which the badge shows).
-// Left out when it would only repeat the badge (e.g. "Brand identity" twice).
-const cardTags = (p) => {
-  const tags = p.tags.filter((t) => t !== "paid").map((t) => filters.find((f) => f.key === t)?.label).filter(Boolean);
-  return tags.length === 1 && tags[0].toLowerCase().startsWith(p.label.toLowerCase().slice(0, 4)) ? "" : tags.join(" · ");
-};
 const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
 
 function card(p, root, v2root, i) {
@@ -187,7 +184,6 @@ function card(p, root, v2root, i) {
   <div class="card-body">
     <span class="badge b-${badgeKind(p)}">${esc(fullLabel(p))}</span>
     <h3><a href="${v2root}work/${p.slug}.html">${esc(p.title)}</a></h3>
-    ${cardTags(p) ? `<p class="card-tags">${esc(cardTags(p))}</p>` : ""}
   </div>
 </article>`;
 }
@@ -322,7 +318,7 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
       </div>
     </div>
     <ol class="steps">
-      <li class="step" data-reveal><span class="step-n">01</span><h3>Request</h3><p>Send your idea by DM, email or <span class="nowrap"><button type="button" class="inline-link" data-open-chat>chat</button>.</span></p></li>
+      <li class="step" data-reveal><span class="step-n">01</span><h3>Request</h3><p>Send your idea by DM, email or chat.</p></li>
       <li class="step" data-reveal><span class="step-n">02</span><h3>Quote</h3><p>Get a clear price and timeline.</p></li>
       <li class="step" data-reveal><span class="step-n">03</span><h3>Approve</h3><p>Confirm and lock in your start date.</p></li>
       <li class="step" data-reveal><span class="step-n">04</span><h3>Design</h3><p>Concepts crafted and refined with you.</p></li>
@@ -354,7 +350,7 @@ ${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong><span
       <div class="info-col" data-reveal>
         <h3 class="dash-pill">Skills</h3>
         <ul class="plain">
-          <li>Social media design</li><li>Brand identity</li><li>Logo design</li><li>Carousels</li><li>Display ads</li><li>Stationery &amp; book covers</li>
+          <li>Social media design</li><li>Brand identity</li><li>Logo design</li><li>Carousels</li><li>Display ads</li><li>Stationery & book covers</li>
         </ul>
       </div>
       <div class="info-col" data-reveal>
@@ -491,7 +487,7 @@ projects.forEach((p, i) => fs.writeFileSync(path.join(OUT, "work", `${p.slug}.ht
 // 404 page and sitemap.
 function notFound() {
   const root = site.url ? `${site.url}/` : "/";
-  return `${head({ title: `Page not found | ${site.name}`, description: site.description, root, ogImage: site.brandCard, pagePath: "404.html" })}
+  return `${head({ title: `Page not found | ${site.name}`, description: site.description, ogDescription: "This page doesn't exist. Head back to the Inshify Studio portfolio.", root, ogImage: site.brandCard, pagePath: "404.html" })}
 <body>
 ${header(root, false)}
 <main id="main" class="wrap section">

@@ -222,7 +222,6 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 .card h3 a:focus-visible { outline: none; }
 .card h3 a:focus-visible::after { outline: 2px solid var(--soft); outline-offset: -2px; border-radius: var(--radius); }
 .card-body { gap: 8px; }
-.card-tags { font-size: 13px; color: var(--muted); }
 /* Project-type badges: neutral pill with a coloured dot per type */
 .badge {
   justify-self: start; display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px 4px 9px;
@@ -235,7 +234,7 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 .b-concept { --dot: #9fb6dc; }
 .b-service { --dot: #c792ea; }
 .b-sample { --dot: #9a9a9e; }
-.nowrap { white-space: nowrap; }
+
 
 /* Services */
 .service { display: grid; align-content: space-between; gap: 48px; min-height: 230px; padding: 28px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); transition: transform 0.4s var(--ease), border-color 0.25s; }
