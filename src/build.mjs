@@ -50,6 +50,7 @@ const icon = {
   close: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   ig: `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
   in: `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8.5 10.5v5M8.5 8v.01M12 15.5v-5m0 2.2c0-1.3 1-2.2 2.1-2.2s1.9.8 1.9 2.2v2.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  mail: `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m4.5 7 7.5 6 7.5-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   pin: `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
 };
 
@@ -317,9 +318,8 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
       <div class="about-media" data-reveal>${portrait}</div>
       <div class="about-copy" data-reveal>
         <p class="eyebrow">About</p>
-        <p class="hello">Hi, I'm</p>
-        <h2 id="about-title">Insha, your friendly neighbourhood <span class="light">graphic designer</span></h2>
-        <p class="lede">The designer behind Inshify Studio, turning ideas into logos, posts and identities that feel premium. My core work is social media design, supported by branding, logos, stationery and book covers.</p>
+        <h2 id="about-title">Your friendly neighbourhood <span class="light">graphic designer</span></h2>
+        <p class="lede">Hi, I'm Insha, the designer behind Inshify Studio, turning ideas into logos, posts and identities that feel premium. My core work is social media design, supported by branding, logos, stationery and book covers.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#contact">Free consultation</a>
           <a class="btn btn-ghost" href="${site.instagram.url}" target="_blank" rel="noopener">${esc(site.instagram.handle)}</a>
@@ -342,11 +342,11 @@ ${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong><span
       </div>
       <div class="info-col" data-reveal>
         <h3 class="dash-pill">Contact</h3>
-        <ul class="plain">
+        <ul class="plain contact-list">
           <li><a href="${site.instagram.url}" target="_blank" rel="noopener">${icon.ig} ${esc(site.instagram.handle)}</a></li>
           <li><a href="${site.linkedin.url}" target="_blank" rel="noopener">${icon.in} ${esc(site.linkedin.handle)}</a></li>
+          ${isPlaceholder(site.email) ? "" : `<li><a href="mailto:${esc(site.email)}">${icon.mail} ${esc(site.email)}</a></li>`}
           ${isPlaceholder(site.city) ? "" : `<li>${icon.pin} Based in ${esc(site.city)}</li>`}
-          ${isPlaceholder(site.email) ? "" : `<li><a href="mailto:${esc(site.email)}">${esc(site.email)}</a></li>`}
         </ul>
       </div>
     </div>
