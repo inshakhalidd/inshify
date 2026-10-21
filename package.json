@@ -1,0 +1,11 @@
+{
+  "name": "inshify",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Inshify Studio — portfolio of Insha, graphic designer (v2 design).",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "start": "node src/serve.mjs"
+  }
+}
