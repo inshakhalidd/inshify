@@ -61,12 +61,12 @@ const TOOLS = {
   InDesign: { abbr: "Id", cls: "t-id" },
   Canva: { abbr: "Canva", cls: "t-canva" },
 };
-const toolTile = (name, size = "") => `<span class="tool-tile ${TOOLS[name].cls} ${size}"><span>${TOOLS[name].abbr}</span></span>`;
+const toolTile = (name, size = "") => `<span class="tool-tile ${TOOLS[name].cls} ${size}" data-abbr="${TOOLS[name].abbr}" aria-hidden="true"></span>`;
 
 // A loose hand-drawn loop, echoing the doodle lines in the reference portfolios.
 const doodle = (cls) => `<svg class="doodle ${cls}" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 360 C 140 120, 300 80, 380 220 S 300 440, 220 330 S 420 60, 640 170 S 880 420, 960 260 S 900 40, 1040 110 S 1180 300, 1230 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 
-function head({ title, description, root, ogImage, pagePath }) {
+function head({ title, description, ogDescription = description, root, ogImage, pagePath }) {
   return `<!doctype html>
 <html lang="en" data-theme="dark" data-theme-key="inshify-theme">
 <head>
@@ -77,7 +77,7 @@ function head({ title, description, root, ogImage, pagePath }) {
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${esc(site.name)}">
 <meta property="og:title" content="${esc(title)}">
-<meta property="og:description" content="${esc(description)}">
+<meta property="og:description" content="${esc(ogDescription)}">
 <meta property="og:image" content="${esc(site.url ? `${site.url}/${ogImage}` : root + ogImage)}">
 ${site.url ? `<link rel="canonical" href="${esc(`${site.url}/${pagePath}`)}">` : ""}
 ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}">` : ""}
@@ -163,14 +163,31 @@ const ctaBand = (contactHref) => `<section class="wrap section-tight" aria-label
   </div>
 </section>`;
 
+// Badge colour per project type, so paid, internship, concept, service and sample work read differently.
+function badgeKind(p) {
+  if (p.label === "Paid client work") return "paid";
+  if (p.label === "Internship") return "intern";
+  if (p.label === "Sample work") return "sample";
+  if (/service/i.test(p.label)) return "service";
+  return "concept"; // Brand identity / Logo concept projects
+}
+// The filter categories a card appears under (except "Paid & internship", which the badge shows).
+// Left out when it would only repeat the badge (e.g. "Brand identity" twice).
+const cardTags = (p) => {
+  const tags = p.tags.filter((t) => t !== "paid").map((t) => filters.find((f) => f.key === t)?.label).filter(Boolean);
+  return tags.length === 1 && tags[0].toLowerCase().startsWith(p.label.toLowerCase().slice(0, 4)) ? "" : tags.join(" · ");
+};
+const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
+
 function card(p, root, v2root, i) {
   const img = p.images[0];
   return `<article class="card" data-tags="${p.tags.join(" ")}">
   <span class="card-n">${num(i)}</span>
   <div class="card-media"><img src="${root}${img.sm}" alt="${esc(img.alt)}" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></div>
   <div class="card-body">
+    <span class="badge b-${badgeKind(p)}">${esc(fullLabel(p))}</span>
     <h3><a href="${v2root}work/${p.slug}.html">${esc(p.title)}</a></h3>
-    <p class="paren">( ${esc(fullLabel(p))} )</p>
+    ${cardTags(p) ? `<p class="card-tags">${esc(cardTags(p))}</p>` : ""}
   </div>
 </article>`;
 }
@@ -205,7 +222,7 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
   const counts = Object.fromEntries(filters.map((f) => [f.key, f.key === "all" ? projects.length : projects.filter((p) => p.tags.includes(f.key)).length]));
   const featured = site.featured.map((s) => bySlug[s]);
 
-  return `${head({ title: `${site.name} — ${site.owner}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, root, ogImage: site.brandCard, pagePath: "" })}
+  return `${head({ title: `${site.name} — ${site.owner}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by Insha. ${projects.length} projects from Inshify Studio, ${isPlaceholder(site.city) ? "" : `${site.city}-based `}graphic design.`, root, ogImage: site.brandCard, pagePath: "" })}
 <body id="top">
 ${header(v2root, true)}
 <main id="main">
@@ -305,7 +322,7 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
       </div>
     </div>
     <ol class="steps">
-      <li class="step" data-reveal><span class="step-n">01</span><h3>Request</h3><p>Send your idea by DM, email or <button type="button" class="inline-link" data-open-chat>chat</button>.</p></li>
+      <li class="step" data-reveal><span class="step-n">01</span><h3>Request</h3><p>Send your idea by DM, email or <span class="nowrap"><button type="button" class="inline-link" data-open-chat>chat</button>.</span></p></li>
       <li class="step" data-reveal><span class="step-n">02</span><h3>Quote</h3><p>Get a clear price and timeline.</p></li>
       <li class="step" data-reveal><span class="step-n">03</span><h3>Approve</h3><p>Confirm and lock in your start date.</p></li>
       <li class="step" data-reveal><span class="step-n">04</span><h3>Design</h3><p>Concepts crafted and refined with you.</p></li>
@@ -415,7 +432,7 @@ function projectPage(p, i) {
     })
     .join("\n    ");
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, graphic designer at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html` })}
+  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, graphic designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html` })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
