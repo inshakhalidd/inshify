@@ -67,7 +67,7 @@ const doodle = (cls) => `<svg class="doodle ${cls}" viewBox="0 0 1200 500" prese
 
 function head({ title, description, root, ogImage, pagePath }) {
   return `<!doctype html>
-<html lang="en" data-theme="light" data-theme-key="theme-v2">
+<html lang="en" data-theme="dark" data-theme-key="inshify-theme">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -81,15 +81,15 @@ function head({ title, description, root, ogImage, pagePath }) {
 ${site.url ? `<link rel="canonical" href="${esc(`${site.url}/${pagePath}`)}">` : ""}
 ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}">` : ""}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f7f6f2">
+<meta name="theme-color" content="#141414">
 <link rel="icon" href="${root}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="${root}assets/img/apple-touch-icon.png">
 <script>
-  // v2 is light-first: saved v2 choice, else light.
+  // Dark by default; light only if the visitor chose it.
   (function () {
     var t = null;
-    try { t = localStorage.getItem("theme-v2"); } catch (e) {}
-    document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+    try { t = localStorage.getItem("inshify-theme"); } catch (e) {}
+    document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,7 +116,7 @@ function header(v2root, home) {
       <a class="btn btn-primary" href="${h("contact")}">Hire me</a>
     </nav>
     <div class="nav-tools">
-      <button class="theme-toggle" type="button" aria-label="Switch to dark mode">${icon.sun}${icon.moon}</button>
+      <button class="theme-toggle" type="button" aria-label="Switch to light mode">${icon.sun}${icon.moon}</button>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span><span></span></button>
     </div>
   </div>
@@ -185,14 +185,7 @@ function mixTitle(t) {
 function home() {
   const root = "";
   const v2root = "";
-  const floats = [["valtora", 1], ["orbit-bite", 1], ["e-rising-trainers", 2], ["simple-logics", 1], ["bean-bliss", 1], ["tyr-skincare", 1]];
-  const floatImgs = floats
-    .map(([slug, n], i) => {
-      const img = bySlug[slug].images[n - 1];
-      return `<a class="float work f${i + 1}" href="work/${slug}.html" tabindex="-1" aria-hidden="true"><img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}"${i < 2 ? ' fetchpriority="high"' : ' loading="lazy"'}></a>`;
-    })
-    .join("");
-  // In dark mode the hero floats Insha's software instead of her work (CSS swaps them).
+  // Insha's software floats around the hero title.
   const toolFloats = site.software
     .filter((name) => TOOLS[name])
     .map((name, i) => `<span class="float tool f${i + 1}" aria-hidden="true">${toolTile(name)}</span>`)
@@ -227,7 +220,6 @@ ${header(v2root, true)}
         <span>Portfolio ${YEAR}</span>
       </div>
       <div class="hero-stage">
-        ${floatImgs}
         ${toolFloats}
         <div class="hero-copy">
           <h1 id="hero-title">Graphic <span class="light">Designer</span></h1>
@@ -241,8 +233,6 @@ ${header(v2root, true)}
       </div>
     </div>
   </section>
-
-  ${toolStrip}
 
   <section class="wrap section" id="featured" aria-labelledby="featured-title">
     <div class="section-head" data-reveal>
@@ -273,6 +263,8 @@ ${featured
   .join("\n")}
     </div>
   </section>
+
+  ${toolStrip}
 
   <section class="wrap section" id="work" aria-labelledby="work-title">
     <div class="section-head" data-reveal>

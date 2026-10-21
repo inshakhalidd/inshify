@@ -375,7 +375,6 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
   .hero-stage { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; min-height: 0; padding-block: 36px 10px; }
   .hero-copy { order: -1; flex: 1 0 100%; margin-bottom: 28px; }
   .float { position: relative; inset: auto; width: 28%; max-width: 170px; }
-  .work.f4, .work.f5, .work.f6 { display: none; }
 }
 @media (max-width: 820px) {
   .menu-toggle { display: grid; }
@@ -415,8 +414,7 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
   .doodle path { stroke-dashoffset: 0; }
 }
 
-/* Software: dark mode floats Insha's tools around the title instead of her work */
-[data-theme="dark"] .float.work, [data-theme="light"] .float.tool { display: none; }
+/* Software: Insha's tools float around the hero title */
 .float.tool { width: clamp(96px, 10vw, 132px); aspect-ratio: 1; overflow: visible; background: none; border: 0; box-shadow: none; }
 .float.tool.f4 { width: clamp(68px, 7vw, 90px); } /* Canva: used least, drawn smallest */
 .tool-tile {
@@ -432,8 +430,8 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 .tool-tile.sm { width: 40px; font-size: 15px; border-width: 1.5px; border-radius: 11px; }
 .t-canva.sm { font-size: 9.5px; }
 
-/* Software strip under the hero */
-.tools-strip { display: flex; align-items: center; gap: 16px 32px; flex-wrap: wrap; padding-block: 24px; border-block: 1px solid var(--border); }
+/* Software strip below the featured work */
+.tools-strip { margin-top: clamp(56px, 8vw, 96px); display: flex; align-items: center; gap: 16px 32px; flex-wrap: wrap; padding-block: 24px; border-block: 1px solid var(--border); }
 .tools-strip .dash-pill { font-size: 13px; }
 .tools-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px 30px; }
 .tools-list li { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }

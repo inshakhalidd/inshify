@@ -1,6 +1,6 @@
 # Inshify Studio (v2 design)
 
-Portfolio of Insha, graphic designer ([@inshifyy](https://www.instagram.com/inshifyy/)). It's a light-first, editorial design with dark mode, built with plain HTML, CSS and JavaScript.
+Portfolio of Insha, graphic designer ([@inshifyy](https://www.instagram.com/inshifyy/)). It's an editorial design, dark by default with a light mode, built with plain HTML, CSS and JavaScript.
 
 **Live:** https://inshakhalidd.github.io/inshify/
 **Previous design (v1):** https://github.com/inshakhalidd/Portfolio

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light" data-theme-key="theme-v2">
+<html lang="en" data-theme="dark" data-theme-key="inshify-theme">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,15 +13,15 @@
 <link rel="canonical" href="https://inshakhalidd.github.io/inshify/">
 <meta property="og:url" content="https://inshakhalidd.github.io/inshify/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#f7f6f2">
+<meta name="theme-color" content="#141414">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <script>
-  // v2 is light-first: saved v2 choice, else light.
+  // Dark by default; light only if the visitor chose it.
   (function () {
     var t = null;
-    try { t = localStorage.getItem("theme-v2"); } catch (e) {}
-    document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+    try { t = localStorage.getItem("inshify-theme"); } catch (e) {}
+    document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
       <a class="btn btn-primary" href="#contact">Hire me</a>
     </nav>
     <div class="nav-tools">
-      <button class="theme-toggle" type="button" aria-label="Switch to dark mode"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+      <button class="theme-toggle" type="button" aria-label="Switch to light mode"><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span><span></span></button>
     </div>
   </div>
@@ -60,7 +60,6 @@
         <span>Portfolio 2026</span>
       </div>
       <div class="hero-stage">
-        <a class="float work f1" href="work/valtora.html" tabindex="-1" aria-hidden="true"><img src="assets/work/valtora/01-sm.jpg" alt="" width="1080" height="1440" fetchpriority="high"></a><a class="float work f2" href="work/orbit-bite.html" tabindex="-1" aria-hidden="true"><img src="assets/work/orbit-bite/01-sm.jpg" alt="" width="1600" height="1600" fetchpriority="high"></a><a class="float work f3" href="work/e-rising-trainers.html" tabindex="-1" aria-hidden="true"><img src="assets/work/e-rising-trainers/02-sm.jpg" alt="" width="1080" height="1440" loading="lazy"></a><a class="float work f4" href="work/simple-logics.html" tabindex="-1" aria-hidden="true"><img src="assets/work/simple-logics/01-sm.jpg" alt="" width="1080" height="1080" loading="lazy"></a><a class="float work f5" href="work/bean-bliss.html" tabindex="-1" aria-hidden="true"><img src="assets/work/bean-bliss/01-sm.jpg" alt="" width="1600" height="1200" loading="lazy"></a><a class="float work f6" href="work/tyr-skincare.html" tabindex="-1" aria-hidden="true"><img src="assets/work/tyr-skincare/01-sm.jpg" alt="" width="1080" height="1080" loading="lazy"></a>
         <span class="float tool f1" aria-hidden="true"><span class="tool-tile t-ps "><span>Ps</span></span></span><span class="float tool f2" aria-hidden="true"><span class="tool-tile t-ai "><span>Ai</span></span></span><span class="float tool f3" aria-hidden="true"><span class="tool-tile t-id "><span>Id</span></span></span><span class="float tool f4" aria-hidden="true"><span class="tool-tile t-canva "><span>Canva</span></span></span>
         <div class="hero-copy">
           <h1 id="hero-title">Graphic <span class="light">Designer</span></h1>
@@ -73,16 +72,6 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="wrap tools-strip" aria-labelledby="tools-title">
-    <h2 class="dash-pill" id="tools-title">Software</h2>
-    <ul class="tools-list">
-      <li><span class="tool-tile t-ps sm"><span>Ps</span></span><span>Photoshop</span></li>
-      <li><span class="tool-tile t-ai sm"><span>Ai</span></span><span>Illustrator</span></li>
-      <li><span class="tool-tile t-id sm"><span>Id</span></span><span>InDesign</span></li>
-      <li><span class="tool-tile t-canva sm"><span>Canva</span></span><span>Canva</span></li>
-    </ul>
   </section>
 
   <section class="wrap section" id="featured" aria-labelledby="featured-title">
@@ -134,6 +123,16 @@
         <a class="feat-media" href="work/valtora.html" tabindex="-1" aria-hidden="true"><img src="assets/work/valtora/01-sm.jpg" alt="" width="1080" height="1440" loading="lazy" decoding="async"></a>
       </article>
     </div>
+  </section>
+
+  <section class="wrap tools-strip" aria-labelledby="tools-title">
+    <h2 class="dash-pill" id="tools-title">Software</h2>
+    <ul class="tools-list">
+      <li><span class="tool-tile t-ps sm"><span>Ps</span></span><span>Photoshop</span></li>
+      <li><span class="tool-tile t-ai sm"><span>Ai</span></span><span>Illustrator</span></li>
+      <li><span class="tool-tile t-id sm"><span>Id</span></span><span>InDesign</span></li>
+      <li><span class="tool-tile t-canva sm"><span>Canva</span></span><span>Canva</span></li>
+    </ul>
   </section>
 
   <section class="wrap section" id="work" aria-labelledby="work-title">
