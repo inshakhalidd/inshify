@@ -132,7 +132,6 @@ function footer(root, v2root) {
       <nav class="footer-links" aria-label="Social">
         <a href="${site.instagram.url}" target="_blank" rel="noopener">Instagram</a>
         <a href="${site.linkedin.url}" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://inshakhalidd.github.io/Portfolio/">View v1</a>
       </nav>
       <p class="disclaimer">Concept and sample work is created for portfolio purposes and is not affiliated with the brands shown.</p>
     </div>

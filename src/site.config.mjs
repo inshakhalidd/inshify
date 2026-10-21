@@ -9,7 +9,7 @@ export const site = {
   // Set to your live URL (no trailing slash), e.g. "https://inshify.netlify.app",
   // so Open Graph images and canonical links become absolute. Leave "" until you know it.
   url: "https://inshakhalidd.github.io/inshify",
-  email: "[YOUR EMAIL]",
+  email: "inshifystudio@gmail.com",
   city: "Karachi",
   // Path to your portrait, e.g. "assets/img/portrait.jpg". Until then About shows `brandCard`.
   portrait: "",
@@ -42,7 +42,7 @@ export const filters = [
   { key: "samples", label: "Samples" },
 ];
 
-const SAMPLE = "Sample work, not affiliated with the brand";
+const SAMPLE = "Sample work";
 
 // Order, titles, labels and descriptions follow Insha-Works.pdf exactly.
 // `brief` comes from the works PDF.
@@ -78,8 +78,7 @@ export const projects = [
   {
     slug: "brewkie", scope: "Brand identity · Guidelines",
     title: "Brewkie",
-    label: "Concept project",
-    sublabel: "Brand identity",
+    label: "Brand identity",
     tags: ["brand"],
     brief: "Brand identity and guidelines for a coffee brand, from an AI-generated brief.",
     alt: "Brewkie brand guidelines page",
@@ -87,8 +86,7 @@ export const projects = [
   {
     slug: "orbit-bite", scope: "Logo · Stationery",
     title: "Orbit Bite",
-    label: "Concept project",
-    sublabel: "Brand identity",
+    label: "Brand identity",
     tags: ["brand", "logos"],
     brief: "Logo and stationery mockups for a food brand, from an AI-generated brief.",
     alt: "Orbit Bite logo and stationery",
@@ -96,8 +94,7 @@ export const projects = [
   {
     slug: "zenfits", scope: "Logo",
     title: "ZenFits",
-    label: "Concept project",
-    sublabel: "Brand identity",
+    label: "Brand identity",
     tags: ["brand", "logos"],
     brief: "Logo for a fitness brand, from an AI-generated brief.",
     alt: "ZenFits logo variations and colour palette",
@@ -106,7 +103,6 @@ export const projects = [
     slug: "logo-design-service", scope: "Logo concepts",
     title: "Logo Design Service: Concept Options",
     label: "Logo service",
-    sublabel: "Concept options",
     tags: ["logos"],
     brief: "Three logo directions presented as options. Concept work, not used by any client.",
     alt: "DeepSummit logo concept option",
@@ -114,8 +110,7 @@ export const projects = [
   {
     slug: "graphicx-hub", scope: "Logo",
     title: "Graphicx Hub",
-    label: "Concept project",
-    sublabel: "Logo",
+    label: "Logo",
     tags: ["logos"],
     brief: "Logo design for a graphics community brand, from an AI-generated brief.",
     alt: "Graphicx Hub logo, stacked and horizontal",
@@ -123,8 +118,7 @@ export const projects = [
   {
     slug: "bean-bliss", scope: "Logo · Stationery",
     title: "Bean Bliss",
-    label: "Concept project",
-    sublabel: "Logo",
+    label: "Logo",
     tags: ["logos"],
     brief: 'Logo of a "B" joined with a coffee bean, with stationery mockups.',
     alt: "Bean Bliss logo on stationery mockups",
@@ -142,7 +136,7 @@ export const projects = [
     title: "Google Ads Display Design",
     label: "Google Ads service",
     tags: ["ads"],
-    brief: "Display ad banners in one set. Sample work, not affiliated with the brands.",
+    brief: "Display ad banners in one set. Sample work.",
     alt: "Google Ads display banner set",
   },
   { slug: "tyr-skincare", scope: "Social media posts", title: "tyr Skincare", label: SAMPLE, tags: ["samples"], brief: "Social media post samples for a skincare brand.", alt: "tyr Skincare social media post sample" },

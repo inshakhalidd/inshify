@@ -5,7 +5,6 @@ Unfilled placeholders are hidden on the live site. Each one appears automaticall
 | Item | Where it goes | Until it's filled in |
 |---|---|---|
 | Portrait photo (optional) | `assets/img/portrait.jpg` + `site.portrait` | About shows your Inshify logo card (`site.brandCard`) |
-| Email | `site.email` | The contact tile reads "Chat with my assistant" instead of "Email me" |
 | Voiceflow snippet | `src/partials/voiceflow.html`, then rebuild | The chat button opens a short greeting that points to Instagram |
 | Original image files | `assets/work/<slug>/NN.jpg` | Images come from Insha-Works.pdf, resized to 1600px max. Swap in originals for sharper results |
 | LinkedIn URL check | `site.linkedin.url` | Assumed `linkedin.com/in/inshakhalid`. Please confirm |
