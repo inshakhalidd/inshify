@@ -392,8 +392,8 @@ ${ctaBand("#contact")}
     </div>
     <div class="grid tiles">
       ${email}
-      <a class="tile" href="${site.instagram.url}" target="_blank" rel="noopener"><span class="tile-ic">${icon.ig}</span><h3>DM on Instagram</h3></a>
-      <a class="tile tile-accent" href="${site.linkedin.url}" target="_blank" rel="noopener"><span class="tile-ic">${icon.in}</span><h3>Connect on LinkedIn ${icon.arrow}</h3></a>
+      <a class="tile" href="${site.instagram.url}" target="_blank" rel="noopener"><span class="tile-ic">${icon.ig}</span><h3>DM on Instagram</h3><p>${esc(site.instagram.handle)}</p></a>
+      <a class="tile tile-accent" href="${site.linkedin.url}" target="_blank" rel="noopener"><span class="tile-ic">${icon.in}</span><h3>Connect on LinkedIn ${icon.arrow}</h3><p>${esc(site.linkedin.handle)}</p></a>
     </div>
   </section>
 </main>
