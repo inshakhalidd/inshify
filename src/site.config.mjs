@@ -108,7 +108,7 @@ export const projects = [
     label: "Logo service",
     tags: ["logos"],
     brief: "Three logo directions presented as options. Concept work, not used by any client.",
-    alt: "DeepSummit logo concept option",
+    alt: "Deep Summit logo concept option",
   },
   {
     slug: "graphicx-hub", scope: "Logo",
