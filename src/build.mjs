@@ -177,7 +177,7 @@ const ctaBand = (contactHref) => `<section class="wrap section-tight" aria-label
   <div class="cta-band" data-reveal>
     ${doodle("doodle-cta")}
     <h2 id="cta-title">Already have an idea and <span class="light">want it designed?</span></h2>
-    <a class="btn btn-dark" href="${contactHref}">Let's talk ${icon.arrow}</a>
+    <a class="btn btn-dark" href="${contactHref}">Hire me ${icon.arrow}</a>
   </div>
 </section>`;
 
@@ -226,10 +226,10 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
   </section>`;
   const email = isPlaceholder(site.email)
     ? `<button class="tile" type="button" data-open-chat><span class="tile-ic">${icon.chat}</span><h3>Chat with my assistant</h3></button>`
-    : `<a class="tile" href="mailto:${esc(site.email)}"><span class="tile-ic">${icon.mail}</span><h3>Email me</h3></a>`;
+    : `<a class="tile" href="mailto:${esc(site.email)}"><span class="tile-ic">${icon.mail}</span><h3>Email me</h3><p>${esc(site.email)}</p></a>`;
   const portrait = site.portrait
     ? `<img class="portrait" src="${root}${esc(site.portrait)}" alt="Portrait of Insha" width="680" height="820" loading="lazy">`
-    : `<img class="portrait portrait-brand" src="${root}${esc(site.brandCard)}" alt="Inshify, graphic designer: the Inshify Studio logo" width="1080" height="1080" loading="lazy">`;
+    : `<img class="portrait portrait-brand" src="${root}${esc(site.brandCard)}" alt="Inshify, Graphic Designer: the Inshify Studio logo" width="1080" height="1080" loading="lazy">`;
   const counts = Object.fromEntries(filters.map((f) => [f.key, f.key === "all" ? projects.length : projects.filter((p) => p.tags.includes(f.key)).length]));
   const featured = site.featured.map((s) => bySlug[s]);
 
@@ -252,10 +252,10 @@ ${header(v2root, true)}
         ${toolFloats}
         <div class="hero-copy">
           <h1 id="hero-title"><span class="line"><span>Graphic</span></span> <span class="line light"><span>Designer</span></span></h1>
-          <p class="paren hero-paren">( Brand identity · Social media design · Logos )</p>
+          <p class="paren hero-paren">(Brand identity · Social media design · Logos)</p>
           <p class="lede">Logos, posts and identities that make your brand impossible to ignore.</p>
           <div class="actions">
-            <a class="btn btn-primary" href="#contact">Work with me ${icon.arrow}</a>
+            <a class="btn btn-primary" href="#contact">Hire me ${icon.arrow}</a>
             <a class="btn btn-ghost" href="#work">See my work</a>
           </div>
         </div>
@@ -279,7 +279,7 @@ ${featured
         <div class="feat-copy">
           <span class="feat-n">${num(i)}</span>
           <h3>${mixTitle(p.title)}</h3>
-          <p class="paren">( ${esc(fullLabel(p))} )</p>
+          <p class="paren">(${esc(fullLabel(p))})</p>
           <dl class="feat-notes">
             <div><dt>The brief</dt><dd>${esc(p.brief)}</dd></div>
             ${p.idea ? `<div><dt>The idea</dt><dd>${esc(p.idea)}</dd></div>` : ""}
@@ -347,7 +347,7 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
       <div class="about-media" data-reveal>${portrait}</div>
       <div class="about-copy" data-reveal>
         <p class="eyebrow">About</p>
-        <h2 id="about-title">Your friendly neighborhood <span class="light">graphic designer</span></h2>
+        <h2 id="about-title">Your friendly neighborhood <span class="light">Graphic Designer</span></h2>
         <p class="lede">Hi, I'm Insha, the designer behind Inshify Studio, turning ideas into logos, posts and identities that feel premium. My core work is social media design, supported by branding, logos, stationery and book covers.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#contact">Free consultation</a>
@@ -359,8 +359,8 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
       <div class="info-col" data-reveal>
         <h3 class="dash-pill">Experience</h3>
         <ul>
-${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong><span>${esc(e.note)}</span></li>`).join("\n")}
-          <li><strong>Inshify Studio</strong><span>Own studio</span></li>
+${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong> <span>${esc(e.note)}</span></li>`).join("\n")}
+          <li><strong>Inshify Studio</strong> <span>Own studio</span></li>
         </ul>
       </div>
       <div class="info-col" data-reveal>
@@ -444,7 +444,7 @@ function projectPage(p, i) {
     })
     .join("\n    ");
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, graphic designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html` })}
+  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html` })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
@@ -454,7 +454,7 @@ ${header(v2root, false)}
     <div class="case-title">
       <div>
         <h1>${mixTitle(p.title)}</h1>
-        <p class="paren">( ${esc(fullLabel(p))} )</p>
+        <p class="paren">(${esc(fullLabel(p))})</p>
       </div>
       <span class="case-n" aria-hidden="true">${num(i)}</span>
     </div>
@@ -462,7 +462,7 @@ ${header(v2root, false)}
       <div><dt>Type</dt><dd>${esc(p.label)}</dd></div>
       <div><dt>Scope</dt><dd>${esc(p.scope)}</dd></div>
       <div><dt>Format</dt><dd>${count} ${count === 1 ? "design" : "designs"}</dd></div>
-      <div class="case-meta-cta"><a class="btn btn-primary" href="${v2root}index.html#contact">Start a project ${icon.arrow}</a></div>
+      <div class="case-meta-cta"><a class="btn btn-primary" href="${v2root}index.html#contact">Hire me ${icon.arrow}</a></div>
     </dl>
   </header>
 
@@ -480,7 +480,7 @@ ${header(v2root, false)}
       <div class="next-copy">
         <span class="eyebrow">Next project · ${num((i + 1) % projects.length)}</span>
         <span class="next-title">${mixTitle(next.title)}</span>
-        <span class="paren">( ${esc(fullLabel(next))} )</span>
+        <span class="paren">(${esc(fullLabel(next))})</span>
       </div>
       <div class="next-media"><img src="${root}${next.images[0].sm}" alt="" width="${next.images[0].w}" height="${next.images[0].h}" loading="lazy" decoding="async"></div>
     </a>
@@ -489,9 +489,9 @@ ${header(v2root, false)}
 ${ctaBand(`${v2root}index.html#contact`)}
 <dialog class="lightbox" aria-label="Image viewer">
   <button class="lb-close" type="button" aria-label="Close">${icon.close}</button>
-  <button class="lb-prev" type="button" aria-label="Previous image">‹</button>
+  <button class="lb-prev" type="button"><span aria-hidden="true">‹</span><span class="sr-only">Previous image</span></button>
   <img alt="">
-  <button class="lb-next" type="button" aria-label="Next image">›</button>
+  <button class="lb-next" type="button"><span aria-hidden="true">›</span><span class="sr-only">Next image</span></button>
 </dialog>
 ${footer(root, v2root)}`;
 }

@@ -287,6 +287,7 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 a.tile:hover, button.tile:hover { border-color: var(--soft); transform: translateY(-3px); }
 .tile-ic { justify-self: start; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border); color: var(--soft); }
 .tile-ic svg { width: 20px; height: 20px; }
+.tile p { color: var(--muted); font-size: 14px; margin-top: -14px; overflow-wrap: anywhere; }
 .tile h3 { font-size: 22px; letter-spacing: -0.025em; display: inline-flex; align-items: center; gap: 6px; }
 .tile-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
 .tile-accent .tile-ic { color: #fff; border-color: rgba(255, 255, 255, 0.35); }

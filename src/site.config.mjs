@@ -17,7 +17,7 @@ export const site = {
   instagram: { handle: "@inshifyy", url: "https://www.instagram.com/inshifyy/" },
   linkedin: { handle: "inshakhalid", url: "https://www.linkedin.com/in/inshakhalid/" },
   description:
-    "Inshify Studio is the portfolio of Insha, a graphic designer creating logos, brand identities and scroll-stopping social media design.",
+    "Inshify Studio is the portfolio of Insha, a Graphic Designer creating logos, brand identities and scroll-stopping social media design.",
   // Projects shown in "A taste of what I can create for you" (by slug).
   featured: ["e-rising-trainers", "brewkie", "valtora"],
   // Images used in the hero card stack: [slug, image number].
