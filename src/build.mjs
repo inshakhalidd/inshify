@@ -43,6 +43,8 @@ for (const p of projects) {
 }
 const bySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 const voiceflow = fs.readFileSync(path.join(ROOT, "src/partials/voiceflow.html"), "utf8").trim();
+// With a real Voiceflow snippet installed, only its launcher is shown (no fallback chat button).
+const hasVoiceflow = /<script/i.test(voiceflow);
 
 const icon = {
   arrow: `<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
@@ -86,7 +88,9 @@ ${site.url ? `<link rel="canonical" href="${esc(`${site.url}/${pagePath}`)}">` :
 ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}">` : ""}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#141414">
-<link rel="icon" href="${root}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="32x32" href="${root}assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="${root}assets/img/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="${root}assets/img/icon-192.png">
 <link rel="apple-touch-icon" href="${root}assets/img/apple-touch-icon.png">
 <script>
   // Dark by default; light only if the visitor chose it.
@@ -141,7 +145,7 @@ function footer(root, v2root) {
     </div>
   </div>
 </footer>
-<button class="chat-fab" type="button" data-open-chat aria-label="Chat with my assistant">${icon.chat}</button>
+${hasVoiceflow ? "" : `<button class="chat-fab" type="button" data-open-chat aria-label="Chat with my assistant">${icon.chat}</button>
 <section class="chat-panel" id="chat-panel" role="dialog" aria-modal="false" aria-labelledby="chat-title" hidden>
   <div class="chat-head">
     <h2 id="chat-title">Inshify assistant</h2>
@@ -151,7 +155,7 @@ function footer(root, v2root) {
     <p class="bubble">Hi, thanks for stopping by! For the quickest reply, DM me on Instagram <a href="${site.instagram.url}" target="_blank" rel="noopener">${esc(site.instagram.handle)}</a>${isPlaceholder(site.email) ? "" : ` or email <a href="mailto:${esc(site.email)}">${esc(site.email)}</a>`}.</p>
   </div>
   <div class="chat-input"><span>Type your message…</span></div>
-</section>
+</section>`}
 ${voiceflow}
 </body>
 </html>
