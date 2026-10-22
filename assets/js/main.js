@@ -23,7 +23,7 @@
 
   // ----- Opening intro: take the cover screen out of the page once it has slid away -----
   if (doc.classList.contains("intro")) {
-    setTimeout(function () { doc.classList.add("intro-gone"); }, 3100);
+    setTimeout(function () { doc.classList.add("intro-gone"); }, 2400);
   }
 
   // ----- Header border once the page scrolls -----
