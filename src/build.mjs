@@ -62,7 +62,7 @@ const icon = {
   pin: `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
 };
 
-// Software tiles: simple app-style badges in each tool's colours (drawn here, not official artwork).
+// Software tiles: simple app-style badges in each tool's colors (drawn here, not official artwork).
 const TOOLS = {
   Photoshop: { abbr: "Ps", cls: "t-ps" },
   Illustrator: { abbr: "Ai", cls: "t-ai" },
@@ -181,7 +181,7 @@ const ctaBand = (contactHref) => `<section class="wrap section-tight" aria-label
   </div>
 </section>`;
 
-// Badge colour per project type, so paid, internship, concept, service and sample work read differently.
+// Badge color per project type, so paid, internship, concept, service and sample work read differently.
 function badgeKind(p) {
   if (p.label === "Paid client work") return "paid";
   if (p.label === "Internship") return "intern";
@@ -225,8 +225,8 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
     </ul>
   </section>`;
   const email = isPlaceholder(site.email)
-    ? `<button class="tile" type="button" data-open-chat><span class="tile-k">Chat</span><h3>Chat with my assistant</h3><p>Ask a quick question</p></button>`
-    : `<a class="tile" href="mailto:${esc(site.email)}"><span class="tile-k">Email</span><h3>Email me</h3><p>${esc(site.email)}</p></a>`;
+    ? `<button class="tile" type="button" data-open-chat><span class="tile-ic">${icon.chat}</span><h3>Chat with my assistant</h3></button>`
+    : `<a class="tile" href="mailto:${esc(site.email)}"><span class="tile-ic">${icon.mail}</span><h3>Email me</h3></a>`;
   const portrait = site.portrait
     ? `<img class="portrait" src="${root}${esc(site.portrait)}" alt="Portrait of Insha" width="680" height="820" loading="lazy">`
     : `<img class="portrait portrait-brand" src="${root}${esc(site.brandCard)}" alt="Inshify, graphic designer: the Inshify Studio logo" width="1080" height="1080" loading="lazy">`;
@@ -321,7 +321,7 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
     </div>
     <div class="grid services">
       <article class="service" data-reveal><span class="dash-pill">01 · Logo design</span><h3>A distinctive mark <span class="light">that works everywhere.</span></h3></article>
-      <article class="service" data-reveal><span class="dash-pill">02 · Brand identity</span><h3>Colour, type and a look <span class="light">that is yours.</span></h3></article>
+      <article class="service" data-reveal><span class="dash-pill">02 · Brand identity</span><h3>Color, type and a look <span class="light">that is yours.</span></h3></article>
       <article class="service" data-reveal><span class="dash-pill">03 · Social media design</span><h3>Scroll-stopping posts <span class="light">that stay on-brand.</span></h3></article>
     </div>
   </section>
@@ -333,13 +333,13 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
         <h2 id="process-title">You are 5 steps away from a brand <span class="light">that stands out</span></h2>
       </div>
     </div>
-    <ol class="steps">
-      <li class="step" data-reveal><span class="step-n">01</span><h3>Request</h3><p>Send your idea by DM, email or chat.</p></li>
-      <li class="step" data-reveal><span class="step-n">02</span><h3>Quote</h3><p>Get a clear price and timeline.</p></li>
-      <li class="step" data-reveal><span class="step-n">03</span><h3>Approve</h3><p>Confirm and lock in your start date.</p></li>
-      <li class="step" data-reveal><span class="step-n">04</span><h3>Design</h3><p>Concepts crafted and refined with you.</p></li>
-      <li class="step" data-reveal><span class="step-n">05</span><h3>Deliver</h3><p>Final files, ready for print and social.</p></li>
-    </ol>
+    <div class="steps" role="list">
+      <div class="step" role="listitem" data-reveal><span class="step-n">01</span><h3>Request</h3><p>Send your idea by DM, email or chat.</p></div>
+      <div class="step" role="listitem" data-reveal><span class="step-n">02</span><h3>Quote</h3><p>Get a clear price and timeline.</p></div>
+      <div class="step" role="listitem" data-reveal><span class="step-n">03</span><h3>Approve</h3><p>Confirm and lock in your start date.</p></div>
+      <div class="step" role="listitem" data-reveal><span class="step-n">04</span><h3>Design</h3><p>Concepts crafted and refined with you.</p></div>
+      <div class="step" role="listitem" data-reveal><span class="step-n">05</span><h3>Deliver</h3><p>Final files, ready for print and social.</p></div>
+    </div>
   </section>
 
   <section class="wrap section" id="about" aria-labelledby="about-title">
@@ -347,7 +347,7 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
       <div class="about-media" data-reveal>${portrait}</div>
       <div class="about-copy" data-reveal>
         <p class="eyebrow">About</p>
-        <h2 id="about-title">Your friendly neighbourhood <span class="light">graphic designer</span></h2>
+        <h2 id="about-title">Your friendly neighborhood <span class="light">graphic designer</span></h2>
         <p class="lede">Hi, I'm Insha, the designer behind Inshify Studio, turning ideas into logos, posts and identities that feel premium. My core work is social media design, supported by branding, logos, stationery and book covers.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#contact">Free consultation</a>
@@ -392,8 +392,8 @@ ${ctaBand("#contact")}
     </div>
     <div class="grid tiles">
       ${email}
-      <a class="tile" href="${site.instagram.url}" target="_blank" rel="noopener"><span class="tile-k">Instagram</span><h3>DM on Instagram</h3><p>${esc(site.instagram.handle)}</p></a>
-      <a class="tile tile-accent" href="${site.linkedin.url}" target="_blank" rel="noopener"><span class="tile-k">LinkedIn</span><h3>Connect on LinkedIn ${icon.arrow}</h3><p>${esc(site.linkedin.handle)}</p></a>
+      <a class="tile" href="${site.instagram.url}" target="_blank" rel="noopener"><span class="tile-ic">${icon.ig}</span><h3>DM on Instagram</h3></a>
+      <a class="tile tile-accent" href="${site.linkedin.url}" target="_blank" rel="noopener"><span class="tile-ic">${icon.in}</span><h3>Connect on LinkedIn ${icon.arrow}</h3></a>
     </div>
   </section>
 </main>

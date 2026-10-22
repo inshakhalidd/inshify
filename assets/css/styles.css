@@ -222,7 +222,7 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 .card h3 a:focus-visible { outline: none; }
 .card h3 a:focus-visible::after { outline: 2px solid var(--soft); outline-offset: -2px; border-radius: var(--radius); }
 .card-body { gap: 8px; }
-/* Project-type badges: neutral pill with a coloured dot per type */
+/* Project-type badges: neutral pill with a colored dot per type */
 .badge {
   justify-self: start; display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px 4px 9px;
   border-radius: 999px; border: 1px solid var(--border); background: var(--card-2);
@@ -285,11 +285,11 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
   transition: border-color 0.2s, transform 0.35s var(--ease);
 }
 a.tile:hover, button.tile:hover { border-color: var(--soft); transform: translateY(-3px); }
-.tile-k { justify-self: start; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.tile-ic { justify-self: start; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--border); color: var(--soft); }
+.tile-ic svg { width: 20px; height: 20px; }
 .tile h3 { font-size: 22px; letter-spacing: -0.025em; display: inline-flex; align-items: center; gap: 6px; }
-.tile p { color: var(--muted); font-size: 14px; margin-top: -14px; }
 .tile-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
-.tile-accent .tile-k, .tile-accent p { color: rgba(255, 255, 255, 0.78); }
+.tile-accent .tile-ic { color: #fff; border-color: rgba(255, 255, 255, 0.35); }
 a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
 /* Footer with giant wordmark */
@@ -485,7 +485,7 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 
 .nf-title { font-size: clamp(44px, 7vw, 84px); margin-bottom: 18px; }
 
-/* Voiceflow chat: keep its own light colours (the site's dark color-scheme made the message box grey) */
+/* Voiceflow chat: keep its own light colors (the site's dark color-scheme made the message box grey) */
 #voiceflow-chat { color-scheme: light; }
 
 /* ----- Opening animation (home, once per visit; html.intro is set in <head>) ----- */

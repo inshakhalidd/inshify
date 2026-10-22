@@ -107,7 +107,7 @@
   var motionOK = !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
   if (motionOK && "IntersectionObserver" in window) {
     var targets = document.querySelectorAll(
-      ".section-head, .eyebrow + h2, .grid > *, .feat-grid > *, .steps > li, .about > *, .cta-band, .credits, .chips, .case-brief, .g-row, .next-project, [data-reveal]"
+      ".section-head, .eyebrow + h2, .grid > *, .feat-grid > *, .steps > .step, .about > *, .cta-band, .credits, .chips, .case-brief, .g-row, .next-project, [data-reveal]"
     );
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {

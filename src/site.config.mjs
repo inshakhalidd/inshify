@@ -81,7 +81,7 @@ export const projects = [
     label: "Concept project",
     sublabel: "Brand identity",
     tags: ["brand"],
-    brief: "Brand identity and guidelines for a coffee brand, from an AI-generated brief.",
+    brief: "Brand identity and guidelines for a coffee brand, from a concept brief.",
     alt: "Brewkie brand guidelines page",
   },
   {
@@ -90,7 +90,7 @@ export const projects = [
     label: "Concept project",
     sublabel: "Brand identity",
     tags: ["brand"],
-    brief: "Logo and stationery mockups for a food brand, from an AI-generated brief.",
+    brief: "Logo and stationery mockups for a food brand, from a concept brief.",
     alt: "Orbit Bite logo and stationery",
   },
   {
@@ -99,8 +99,8 @@ export const projects = [
     label: "Concept project",
     sublabel: "Brand identity",
     tags: ["brand"],
-    brief: "Logo for a fitness brand, from an AI-generated brief.",
-    alt: "ZenFits logo variations and colour palette",
+    brief: "Logo for a fitness brand, from a concept brief.",
+    alt: "ZenFits logo variations and color palette",
   },
   {
     slug: "logo-design-service", scope: "Logo concepts",
@@ -115,7 +115,7 @@ export const projects = [
     title: "Graphicx Hub",
     label: "Logo",
     tags: ["logos"],
-    brief: "Logo design for a graphics community brand, from an AI-generated brief.",
+    brief: "Logo design for a graphics community brand, from a concept brief.",
     alt: "Graphicx Hub logo, stacked and horizontal",
   },
   {
@@ -160,7 +160,7 @@ const writeups = {
     idea: "Each board introduces a brand the way a client would first meet it: logo, a short overview and real product imagery on one page. The layout adapts to each brand's character, from a clean clinical look for Smile Brilliant to bold red for Razor and warm earth tones for Kinfolk.",
   },
   brewkie: {
-    idea: "A warm coffee-brown palette and a playful cup-and-cookie mark give Brewkie a cosy, friendly personality. The guidelines cover the logo, colour palette, patterns, stationery and mockups, so the brand stays consistent wherever it appears.",
+    idea: "A warm coffee-brown palette and a playful cup-and-cookie mark give Brewkie a cozy, friendly personality. The guidelines cover the logo, color palette, patterns, stationery and mockups, so the brand stays consistent wherever it appears.",
   },
   "orbit-bite": {
     idea: "The name became the idea: a bitten doughnut circled by a planet-like ring, in rich chocolate and cream. Rounded type and the tagline \"Orbit Your Taste\" keep it fun, and the stationery shows the mark working in print.",
