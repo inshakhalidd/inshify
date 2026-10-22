@@ -128,6 +128,21 @@
   </div>
   <div class="chat-input"><span>Type your message…</span></div>
 </section>
-<!-- [PASTE VOICEFLOW SNIPPET HERE] — paste the webchat <script> from Voiceflow (Integrations → Web chat), then run `node src/build.mjs` to copy it into every page. -->
+<!-- Voiceflow web chat (Insha's agent). The site's own chat button hides itself once this loads. -->
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '6ad0bd885e27fd41d9a4878e' },
+          url: 'https://general-runtime.voiceflow.com',
+          voice: {
+            url: 'https://runtime-api.voiceflow.com'
+          }
+        });
+      }
+      v.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs'; v.type = 'text/javascript'; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
 </body>
 </html>
