@@ -71,7 +71,7 @@ const toolTile = (name, size = "") => `<span class="tool-tile ${TOOLS[name].cls}
 // A loose hand-drawn loop, echoing the doodle lines in the reference portfolios.
 const doodle = (cls) => `<svg class="doodle ${cls}" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 360 C 140 120, 300 80, 380 220 S 300 440, 220 330 S 420 60, 640 170 S 880 420, 960 260 S 900 40, 1040 110 S 1180 300, 1230 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 
-function head({ title, description, ogDescription = description, root, ogImage, pagePath }) {
+function head({ title, description, ogDescription = description, root, ogImage, pagePath, intro = false }) {
   return `<!doctype html>
 <html lang="en" data-theme="dark" data-theme-key="inshify-theme">
 <head>
@@ -97,7 +97,14 @@ ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}
   (function () {
     var t = null;
     try { t = localStorage.getItem("inshify-theme"); } catch (e) {}
-    document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+    document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");${intro ? `
+    // Opening intro: once per visit, skipped for reduced motion.
+    try {
+      if (!sessionStorage.getItem("inshify-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("intro");
+        sessionStorage.setItem("inshify-intro", "1");
+      }
+    } catch (e) {}` : ""}
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -222,8 +229,9 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
   const counts = Object.fromEntries(filters.map((f) => [f.key, f.key === "all" ? projects.length : projects.filter((p) => p.tags.includes(f.key)).length]));
   const featured = site.featured.map((s) => bySlug[s]);
 
-  return `${head({ title: `${site.name} — ${site.owner}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by Insha. ${projects.length} projects from Inshify Studio, ${isPlaceholder(site.city) ? "" : `${site.city}-based `}graphic design.`, root, ogImage: site.brandCard, pagePath: "" })}
+  return `${head({ title: `${site.name} — ${site.owner}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by Insha. ${projects.length} projects from Inshify Studio, ${isPlaceholder(site.city) ? "" : `${site.city}-based `}graphic design.`, root, ogImage: site.brandCard, pagePath: "", intro: true })}
 <body id="top">
+<div class="intro-screen" aria-hidden="true"><span class="intro-mark"></span><span class="intro-sub">Graphic design studio</span><span class="intro-bar"></span></div>
 ${header(v2root, true)}
 <main id="main">
   <section class="hero" aria-labelledby="hero-title">
@@ -239,7 +247,7 @@ ${header(v2root, true)}
       <div class="hero-stage">
         ${toolFloats}
         <div class="hero-copy">
-          <h1 id="hero-title">Graphic <span class="light">Designer</span></h1>
+          <h1 id="hero-title"><span class="line"><span>Graphic</span></span> <span class="line light"><span>Designer</span></span></h1>
           <p class="paren hero-paren">( Brand identity · Social media design · Logos )</p>
           <p class="lede">Logos, posts and identities that make your brand impossible to ignore.</p>
           <div class="actions">

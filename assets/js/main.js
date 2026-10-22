@@ -21,6 +21,11 @@
     });
   }
 
+  // ----- Opening intro: take the cover screen out of the page once it has slid away -----
+  if (doc.classList.contains("intro")) {
+    setTimeout(function () { doc.classList.add("intro-gone"); }, 2400);
+  }
+
   // ----- Header border once the page scrolls -----
   function onScroll() { doc.classList.toggle("scrolled", window.scrollY > 8); }
   onScroll();

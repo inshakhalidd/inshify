@@ -24,6 +24,13 @@
     var t = null;
     try { t = localStorage.getItem("inshify-theme"); } catch (e) {}
     document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
+    // Opening intro: once per visit, skipped for reduced motion.
+    try {
+      if (!sessionStorage.getItem("inshify-intro") && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("intro");
+        sessionStorage.setItem("inshify-intro", "1");
+      }
+    } catch (e) {}
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +40,7 @@
 <script src="assets/js/main.js" defer></script>
 </head>
 <body id="top">
+<div class="intro-screen" aria-hidden="true"><span class="intro-mark"></span><span class="intro-sub">Graphic design studio</span><span class="intro-bar"></span></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap nav">
@@ -64,7 +72,7 @@
       <div class="hero-stage">
         <span class="float tool f1" aria-hidden="true"><span class="tool-tile t-ps " data-abbr="Ps" aria-hidden="true"></span></span><span class="float tool f2" aria-hidden="true"><span class="tool-tile t-ai " data-abbr="Ai" aria-hidden="true"></span></span><span class="float tool f3" aria-hidden="true"><span class="tool-tile t-id " data-abbr="Id" aria-hidden="true"></span></span><span class="float tool f4" aria-hidden="true"><span class="tool-tile t-canva " data-abbr="Canva" aria-hidden="true"></span></span>
         <div class="hero-copy">
-          <h1 id="hero-title">Graphic <span class="light">Designer</span></h1>
+          <h1 id="hero-title"><span class="line"><span>Graphic</span></span> <span class="line light"><span>Designer</span></span></h1>
           <p class="paren hero-paren">( Brand identity · Social media design · Logos )</p>
           <p class="lede">Logos, posts and identities that make your brand impossible to ignore.</p>
           <div class="actions">
