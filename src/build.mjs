@@ -3,9 +3,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import { site, filters, projects } from "./site.config.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+// Content hash for ?v= on CSS/JS links, so visitors get changes without waiting out the Pages cache.
+const assetVersion = (file) => createHash("sha1").update(fs.readFileSync(path.join(ROOT, file))).digest("hex").slice(0, 8);
 const OUT = ROOT;
 const YEAR = 2026;
 
@@ -110,8 +113,8 @@ ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap">
-<link rel="stylesheet" href="${root}assets/css/styles.css">
-<script src="${root}assets/js/main.js" defer></script>
+<link rel="stylesheet" href="${root}assets/css/styles.css?v=${assetVersion("assets/css/styles.css")}">
+<script src="${root}assets/js/main.js?v=${assetVersion("assets/js/main.js")}" defer></script>
 </head>`;
 }
 
