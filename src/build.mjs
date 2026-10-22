@@ -67,8 +67,9 @@ const TOOLS = {
   Photoshop: { abbr: "Ps", cls: "t-ps" },
   Illustrator: { abbr: "Ai", cls: "t-ai" },
   InDesign: { abbr: "Id", cls: "t-id" },
-  Canva: { abbr: "Canva", cls: "t-canva" },
 };
+// Hero spots for the software tiles: top left, right, lower left, so three tiles balance around the title.
+const HERO_SPOTS = ["f1", "f4", "f5"];
 const toolTile = (name, size = "") => `<span class="tool-tile ${TOOLS[name].cls} ${size}" data-abbr="${TOOLS[name].abbr}" aria-hidden="true"></span>`;
 
 // A loose hand-drawn loop, echoing the doodle lines in the reference portfolios.
@@ -215,9 +216,9 @@ function home() {
   // Insha's software floats around the hero title.
   const toolFloats = site.software
     .filter((name) => TOOLS[name])
-    .map((name, i) => `<span class="float tool f${i + 1}" aria-hidden="true">${toolTile(name)}</span>`)
+    .map((name, i) => `<span class="float tool ${HERO_SPOTS[i]}" aria-hidden="true">${toolTile(name)}</span>`)
     .join("");
-  const toolStrip = `<section class="wrap tools-strip" aria-labelledby="tools-title">
+  const toolStrip = `<section class="wrap tools-strip" aria-labelledby="tools-title" data-reveal>
     <h2 class="dash-pill" id="tools-title">Software</h2>
     <ul class="tools-list">
 ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : ""}<span>${esc(name)}</span></li>`).join("\n")}

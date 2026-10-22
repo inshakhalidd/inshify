@@ -23,7 +23,7 @@ export const site = {
   // Images used in the hero card stack: [slug, image number].
   hero: [["valtora", 1], ["e-rising-trainers", 2], ["e-rising-trainers", 6]],
   // Design software Insha uses (shown in v2).
-  software: ["Photoshop", "Illustrator", "InDesign", "Canva"],
+  software: ["Photoshop", "Illustrator", "InDesign"],
   // Real experience shown under the hero (names only, no logos).
   experience: [
     { name: "E-Rising Trainers", note: "Client work" },
