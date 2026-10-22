@@ -235,7 +235,10 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
 
   return `${head({ title: `${site.name} — ${site.owner}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by Insha. ${projects.length} projects from Inshify Studio, ${isPlaceholder(site.city) ? "" : `${site.city}-based `}graphic design.`, root, ogImage: site.brandCard, pagePath: "", intro: true })}
 <body id="top">
-<div class="intro-screen" aria-hidden="true"><span class="intro-mark"></span><span class="intro-sub">Graphic design studio</span><span class="intro-bar"></span></div>
+<div class="intro-screen" aria-hidden="true">
+  <div class="intro-logo"><span class="intro-ring"></span><span class="intro-mark"></span>${site.software.filter((name) => TOOLS[name]).map((name, i) => `<span class="intro-tool it${i + 1}">${toolTile(name)}</span>`).join("")}</div>
+  <span class="intro-sub">Graphic design studio</span><span class="intro-bar"></span>
+</div>
 ${header(v2root, true)}
 <main id="main">
   <section class="hero" aria-labelledby="hero-title">

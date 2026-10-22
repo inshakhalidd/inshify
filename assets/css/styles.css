@@ -485,23 +485,43 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 #voiceflow-chat { color-scheme: light; }
 
 /* ----- Opening animation (home, once per visit; html.intro is set in <head>) ----- */
-.intro { --intro: 1.6s; }
+.intro { --intro: 2.25s; }
 .intro-screen { display: none; }
 .intro .intro-screen {
   position: fixed; inset: 0; z-index: 200; display: grid; place-content: center; justify-items: center; gap: 18px;
-  background: var(--bg); color: var(--muted);
-  animation: intro-out 0.75s cubic-bezier(0.7, 0, 0.2, 1) 1.45s forwards;
+  background: radial-gradient(42% 38% at 50% 46%, rgba(78, 110, 158, 0.32), transparent 72%), var(--bg); color: var(--muted);
+  animation: intro-out 0.75s cubic-bezier(0.7, 0, 0.2, 1) 2.1s forwards;
+}
+/* Wordmark with a soft glow, a spinning colour ring and Insha's software orbiting in */
+.intro-logo { position: relative; margin: 56px 0 40px; filter: drop-shadow(0 0 22px rgba(159, 182, 220, 0.35)); }
+.intro-ring {
+  position: absolute; inset: -34% -14%; border-radius: 50%;
+  background: conic-gradient(from var(--ring-a), transparent 0deg, #31a8ff 70deg, #ff9a00 150deg, #ff3366 220deg, transparent 300deg);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px), #000 99%, transparent 100%);
+  mask: radial-gradient(closest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px), #000 99%, transparent 100%);
+  animation: intro-ring-in 0.9s ease 0.3s both, intro-spin 2.4s linear infinite;
 }
 .intro-mark {
-  display: block; width: min(64vw, 360px); aspect-ratio: 420 / 182; background: var(--mark);
+  display: block; width: min(60vw, 340px); aspect-ratio: 420 / 182;
+  background: linear-gradient(100deg, var(--mark) 38%, #bcd2ff 45%, #ffffff 50%, #d2c4ff 55%, var(--mark) 62%) 100% 0 / 300% 100%;
   -webkit-mask: url("../img/inshify-wordmark.png") center / contain no-repeat;
   mask: url("../img/inshify-wordmark.png") center / contain no-repeat;
-  animation: intro-wipe 1s var(--ease) 0.1s both;
+  animation: intro-wipe 1s var(--ease) 0.1s both, intro-shimmer 1.3s ease-in-out 1s both;
 }
-.intro-sub { font-size: 12px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; animation: rise 0.8s var(--ease) 0.55s both; }
+.intro-tool { position: absolute; width: clamp(44px, 9vw, 58px); animation: intro-orbit 0.9s var(--ease) both, tile-bob 2.4s ease-in-out 1.4s infinite alternate; }
+.intro-tool .tool-tile { font-size: clamp(16px, 3.4vw, 22px); border-width: 1.5px; box-shadow: 0 14px 30px -12px currentColor; }
+.it1 { left: -16%; top: -52%; rotate: -10deg; --from: 90px 70px; animation-delay: 0.45s, 1.4s; }
+.it2 { right: -22%; top: 18%; rotate: 8deg; --from: -100px 0px; animation-delay: 0.6s, 1.8s; }
+.it3 { left: -12%; top: 106%; rotate: 6deg; --from: 90px -70px; animation-delay: 0.75s, 2.1s; }
+.intro-sub { font-size: 12px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; animation: rise 0.8s var(--ease) 0.8s both; }
 .intro-bar { width: 120px; height: 2px; border-radius: 2px; background: var(--border); overflow: hidden; position: relative; }
-.intro-bar::after { content: ""; position: absolute; inset: 0; background: var(--soft); transform-origin: left; animation: intro-fill 1.2s var(--ease) 0.2s both; }
+.intro-bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #31a8ff, #9fb6dc, #ff3366); transform-origin: left; animation: intro-fill 1.8s var(--ease) 0.2s both; }
 @keyframes intro-wipe { from { clip-path: inset(0 100% 0 0); scale: 0.94; opacity: 0.4; } to { clip-path: inset(0 0 0 0); scale: 1; opacity: 1; } }
+@keyframes intro-shimmer { from { background-position: 100% 0; } to { background-position: 0% 0; } }
+@keyframes intro-ring-in { from { opacity: 0; scale: 0.7; } to { opacity: 0.9; scale: 1; } }
+@property --ring-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes intro-spin { to { --ring-a: 360deg; } }
+@keyframes intro-orbit { from { opacity: 0; translate: var(--from); scale: 0.2; rotate: -120deg; } to { opacity: 1; translate: 0 0; scale: 1; } }
 @keyframes intro-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes intro-out { to { transform: translateY(-100%); visibility: hidden; pointer-events: none; } }
 .intro.intro-gone .intro-screen { display: none; }
