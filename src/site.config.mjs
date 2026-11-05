@@ -114,8 +114,9 @@ export const projects = [
     ],
     fonts: [
       { name: "Gampolins", use: "Logo and headlines" },
-      { name: "Source Sans", use: "Body text, prices and captions", css: "'Source Sans 3', sans-serif" },
+      { name: "Source Sans", family: "Source Sans 3", weights: "400;600;700", use: "Body text, prices and captions" },
     ],
+    typeLine: "Freshly glazed every morning. Pick your orbit.",
     typeSample: { src: "assets/img/type/orbit-bite.jpg", w: 1200, h: 474, bg: "#f4d6b2", alt: "Orbit Bite type in use: the headline Choose Your Planet in Gampolins over a line of Source Sans" },
   },
   {
@@ -234,20 +235,25 @@ const covers = {
 // Palettes are sampled from the final artwork unless a note says where they come from.
 // type: [width, height, background] of assets/img/type/<slug>.jpg, a headline cropped from the work.
 const SAMPLED = "Colors sampled from the final artwork.";
+// A Google font: name shown on the card, the weights to load, and what it is used for.
+const font = (name, weights, use, fallback = "sans-serif") => ({ name, family: name, weights, use, fallback });
 const brandKits = {
   "e-rising-trainers": {
     palette: [["Campaign Red", "#C2272D", "Headlines, banners, buttons"], ["Charcoal", "#2D2E2C", "Headlines and body text"], ["Paper White", "#F8F8F8", "Backgrounds"]],
-    type: [729, 238, "#fafafa"], typeAlt: "E-Rising Trainers type in use: Master Graphic Design With AI",
+    fonts: [font("Montserrat", "500;800", "Headlines"), font("Montserrat", "500;800", "Body text and details")],
+    specimen: { bg: "#F8F8F8", ink: "#2D2E2C", accent: "#C2272D", upper: true, head: [["Master "], ["Graphic Design", true]], line: "From beginner to advanced. Freelancing and passive income." },
   },
   "simple-logics": {
     palette: [["Midnight", "#000414", "Backgrounds"], ["Deep Navy", "#273452", "Cards and panels"], ["Steel Blue", "#3B5E8E", "Lines and icons"], ["Electric Cyan", "#2CBEE2", "Highlight words"], ["Cloud", "#EDEDEE", "Headlines and text"]],
     note: "Colors sampled from the Simple Logics posts.",
-    type: [562, 367, "#00021e"], typeAlt: "Simple Logics type in use: From Idea To Launch",
+    fonts: [font("Montserrat", "400;700", "Headlines"), font("Montserrat", "400;700", "Body text")],
+    specimen: { bg: "#000414", ink: "#EDEDEE", accent: "#2CBEE2", head: [["From Idea To "], ["Launch", true]], line: "We turn startup ideas into real products, fast and focused." },
   },
   brewkie: {
     palette: [["Rebel", "#350E07", "Logo, dark backgrounds"], ["Brown Eyes", "#9D642F", "Accents and patterns"], ["Light Camel", "#D7B17C", "Light accents and packaging"], ["White", "#FFFFFF", "Page backgrounds"]],
     note: "Rebel, Brown Eyes and Light Camel are the three primary colors in the Brewkie guidelines.",
-    type: [819, 546, "#794521"], typeAlt: "Brewkie type in use: the logo and Brand Guidelines title",
+    fonts: [font("Montserrat", "500;800", "Headlines and titles"), font("Montserrat", "500;800", "Body text")],
+    specimen: { bg: "#350E07", ink: "#FFFFFF", accent: "#D7B17C", upper: true, head: [["Brand "], ["Guidelines", true]], line: "Comfort in every cup. The Brewkie identity manual." },
   },
   zenfits: {
     palette: [["Forest", "#152C08", "Logo"], ["Sage", "#A3B673", "Leaf accent"], ["Olive", "#515A3E", "Secondary tone"], ["Mist", "#E3E8C0", "Backgrounds"]],
@@ -263,26 +269,28 @@ const brandKits = {
   },
   valtora: {
     palette: [["Deep Violet", "#35135D", "Backgrounds"], ["Royal Purple", "#55377E", "Gradients"], ["Amethyst", "#7C5DA3", "Gradients and 3D art"], ["Lavender", "#B391D7", "Highlights"], ["Lilac White", "#F3EAF5", "Text"], ["Coin Gold", "#D69523", "Accents"]],
-    type: [815, 295, "#46256e"], typeAlt: "Valtora type in use: Wall Street Is Quietly Moving Onchain",
+    fonts: [font("Montserrat", "300;400;800", "Headlines, light with bold keywords"), font("Montserrat", "300;400;800", "Body text")],
+    specimen: { bg: "#35135D", ink: "#F3EAF5", accent: "#FFFFFF", light: true, head: [["Wall Street Is Quietly Moving "], ["Onchain", true]], line: "$15B says it's already happening." },
   },
   "google-ads-display": {
     palette: [["Ramzan Red", "#9B2A2F", "Sale banners"], ["Deep Maroon", "#380703", "Banner backgrounds"], ["Slate", "#30354A", "Backgrounds"], ["Silver", "#AFAEAA", "Product banners"], ["Mist Grey", "#E3E2E0", "Light panels"]],
-    type: [294, 285, "#000000"], typeAlt: "Display ad type in use: Confidence You Can Feel",
   },
   "tyr-skincare": {
     palette: [["Glow Cream", "#E2DFB1", "Backgrounds"], ["Golden Sand", "#CFC086", "Texture"], ["Deep Sage", "#3C4940", "Panels"], ["Amber", "#9B805E", "Accents"], ["Ink", "#0D1211", "Headlines and packaging"], ["White", "#FDFDFD", "Labels"]],
-    type: [994, 162, "#d6ce99"], typeAlt: "tyr Skincare type in use: Seal In The Glow",
+    fonts: [font("Bodoni Moda", "400;600", "Headlines and claims", "serif"), font("Bodoni Moda", "400;600", "Body text", "serif")],
+    specimen: { bg: "#E2DFB1", ink: "#0D1211", accent: "#0D1211", upper: true, head: [["Seal In The Glow"]], line: "Anti-aging, hydration and soothing, from natural skincare." },
   },
   "torpedo-line-consulting": {
     palette: [["Navy", "#062149", "Headlines"], ["Signal Yellow", "#F5C959", "Highlight words"], ["Ink", "#110F17", "Backgrounds"], ["White", "#FCFDFC", "Cards"]],
-    type: [918, 270, "#ffffff"], typeAlt: "Torpedo Line Consulting type in use: Protect What Matters Most",
+    fonts: [font("Poppins", "400;800", "Headlines"), font("Poppins", "400;800", "Body text")],
+    specimen: { bg: "#FFFFFF", ink: "#062149", accent: "#F5C959", upper: true, head: [["Protect", true], [" What Matters "], ["Most", true]], line: "Strategically enhancing organizational resilience." },
   },
 };
 for (const [slug, k] of Object.entries(brandKits)) {
   const p = projects.find((x) => x.slug === slug);
   p.palette = k.palette.map(([name, hex, use]) => ({ name, hex, use }));
   p.paletteNote = k.note || SAMPLED;
-  if (k.type) p.typeSample = { src: `assets/img/type/${slug}.jpg`, w: k.type[0], h: k.type[1], bg: k.type[2], alt: k.typeAlt };
+  if (k.fonts) { p.fonts = k.fonts; p.specimen = k.specimen; p.typeLine = k.specimen.line; }
 }
 
 // Logo system tiles (assets/img/logos/<file>): a color crop shown as it is, or a "-mask" cut-out recolored with `color`.
@@ -311,10 +319,7 @@ const logoSystems = {
 // Mockups shown above the gallery: phones with posts in the feed, or a browser window for display ads.
 // pick: image numbers (1 = first image, counting across sets).
 const mockups = {
-  "e-rising-trainers": { kind: "phones", pick: [1, 6, 3] },
-  "simple-logics": { kind: "phones", pick: [2, 1, 4] },
   "orbit-bite": { kind: "phones", pick: [2, 1, 5] },
-  valtora: { kind: "phones", pick: [2, 1, 6] },
   "tyr-skincare": { kind: "phones", pick: [2, 1, 3] },
   "torpedo-line-consulting": { kind: "phones", pick: [1] },
   "google-ads-display": { kind: "browser", pick: [3] },

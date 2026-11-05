@@ -540,6 +540,28 @@ function mockup(p, root) {
   </section>`;
 }
 
+// Font helpers for the Color & type section. A font with a family is loaded from Google Fonts.
+const fontCss = (f) => `font-family:'${f.family}', ${f.fallback || "sans-serif"}`;
+const heaviest = (f) => Math.max(...String(f.weights || "400").split(";").map(Number));
+const lightest = (f) => Math.min(...String(f.weights || "400").split(";").map(Number));
+const fontStyle = (f, display) => `${fontCss(f)};font-weight:${display ? heaviest(f) : Math.max(400, lightest(f))}`;
+function googleFonts(fonts = []) {
+  const byFamily = {};
+  for (const f of fonts.filter((x) => x.family && x.weights)) {
+    byFamily[f.family] = new Set([...(byFamily[f.family] || []), ...f.weights.split(";")]);
+  }
+  return Object.entries(byFamily)
+    .map(([family, w]) => `family=${family.replace(/ /g, "+")}:wght@${[...w].map(Number).sort((a, b) => a - b).join(";")}`)
+    .join("&");
+}
+function specimen(p) {
+  const sp = p.specimen;
+  if (!sp) return "";
+  const [display, body] = p.fonts;
+  const head = sp.head.map(([text, accent]) => (accent ? `<span style="color:${sp.accent};font-weight:${heaviest(display)}">${esc(text)}</span>` : esc(text))).join("");
+  return `<div class="type-specimen${sp.upper ? " upper" : ""}" style="background:${sp.bg};color:${sp.ink}" data-reveal><p class="sp-head" style="${fontCss(display)};font-weight:${sp.light ? lightest(display) : heaviest(display)}">${head}</p><p class="sp-line" style="${fontStyle(body, false)}">${esc(sp.line)}</p><span class="sp-cap">Type in use</span></div>`;
+}
+
 // ---------- Project page ----------
 function projectPage(p, i) {
   const root = "../";
@@ -579,12 +601,12 @@ function projectPage(p, i) {
 ${p.palette.map((c) => `      <li class="swatch"><span class="chip" style="background:${esc(c.hex)}"></span><span class="sw-name">${esc(c.name)}</span><span class="sw-hex">${esc(c.hex)}</span><span class="sw-use">${esc(c.use)}</span></li>`).join("\n")}
     </ul>
     ${p.typeSample || p.fonts ? `<div class="type-grid${p.fonts ? "" : " solo"}">
-${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span class="dash-pill">${k ? "Body" : "Display"}</span><p class="type-name"${f.css ? ` style="font-family:${esc(f.css)}"` : ""}>${esc(f.name)}</p><p class="type-use">${esc(f.use)}</p>${f.css ? `<p class="type-sample" style="font-family:${esc(f.css)}">Freshly glazed every morning. Pick your orbit.</p>` : ""}</div>`).join("\n")}
-      ${p.typeSample ? `<figure class="type-in-use" style="background:${esc(p.typeSample.bg)}" data-reveal><img src="${root}${p.typeSample.src}" alt="${esc(p.typeSample.alt)}" width="${p.typeSample.w}" height="${p.typeSample.h}" loading="lazy" decoding="async"><figcaption>Type in use, from the final designs</figcaption></figure>` : ""}
+${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span class="dash-pill">${k ? "Body" : "Display"}</span><p class="type-name"${f.family ? ` style="${fontStyle(f, !k)}"` : ""}>${esc(f.name)}</p><p class="type-use">${esc(f.use)}</p>${k && f.family && p.typeLine ? `<p class="type-sample" style="${fontStyle(f, false)}">${esc(p.typeLine)}</p>` : ""}</div>`).join("\n")}
+      ${p.typeSample ? `<figure class="type-in-use" style="background:${esc(p.typeSample.bg)}" data-reveal><img src="${root}${p.typeSample.src}" alt="${esc(p.typeSample.alt)}" width="${p.typeSample.w}" height="${p.typeSample.h}" loading="lazy" decoding="async"><figcaption>Type in use, from the final designs</figcaption></figure>` : specimen(p)}
     </div>` : ""}
   </section>` : "";
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: (p.fonts || []).some((f) => f.css) ? "family=Source+Sans+3:wght@400;600;700" : "" })}
+  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
@@ -613,7 +635,7 @@ ${header(v2root, false)}
 ${brandSystem}
 ${logoSystem(p, root)}
 ${mockup(p, root)}
-${p.logoSystem ? "" : `  <section class="wrap gallery" aria-label="Project images">
+${p.logoSystem || (p.mockup && p.images.length === 1) ? "" : `  <section class="wrap gallery" aria-label="Project images">
     ${gallery}
   </section>`}
 
