@@ -220,11 +220,18 @@ const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
 // (p.cover in the config). One pick is shown alone; with more, the first leads and the next two sit beside it.
 function cover(p, root) {
   const { bg, pick } = p.cover;
-  const piece = (n, k) => {
-    const img = p.images[n - 1];
-    return `<span class="cv cv-${k}" style="--a:${(img.w / img.h).toFixed(4)}"><img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></span>`;
+  // A pick is an image number, or the name of a logo cut in assets/img/logos/.
+  const art = (n) => {
+    if (typeof n === "number") return p.images[n - 1];
+    const src = `assets/img/logos/${n}.jpg`;
+    const tile = (p.logoSystem || []).find((t) => t.file === n && !t.mask);
+    return { src, sm: src, ...jpegSize(path.join(ROOT, src)), fit: tile ? tile.bg : "#fff" };
   };
-  const lead = p.images[pick[0] - 1];
+  const piece = (n, k) => {
+    const img = art(n);
+    return `<span class="cv cv-${k}${img.fit ? " fit" : ""}" style="--a:${(img.w / img.h).toFixed(4)}${img.fit ? `;background:${img.fit}` : ""}"><img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></span>`;
+  };
+  const lead = art(pick[0]);
   const wide = lead.w / lead.h > 1.2 ? " glimpse-wide" : ""; // landscape leads go across the top
   const inner = pick.length === 1 ? piece(pick[0], "hero") : `<span class="glimpse${wide}">${piece(pick[0], "lead")}${pick.slice(1, 3).map((n) => piece(n, "side")).join("")}</span>`;
   return `<span class="cover" style="--c1:${bg[0]};--c2:${bg[1]}" aria-hidden="true">${inner}</span>`;
@@ -606,9 +613,9 @@ ${header(v2root, false)}
 ${brandSystem}
 ${logoSystem(p, root)}
 ${mockup(p, root)}
-  <section class="wrap gallery" aria-label="Project images">
+${p.logoSystem ? "" : `  <section class="wrap gallery" aria-label="Project images">
     ${gallery}
-  </section>
+  </section>`}
 
   <nav class="wrap next-wrap" aria-label="Next project">
     <a class="next-project" href="${next.slug}.html" data-reveal>

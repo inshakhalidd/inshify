@@ -225,9 +225,9 @@ const covers = {
   brewkie: { bg: ["#a86d3e", "#2f1a0d"], pick: [1, 2, 3] },
   "google-ads-display": { bg: ["#4a5078", "#10121c"], pick: [3, 1, 2] },
   "logo-design-service": { bg: ["#b48ee6", "#24173f"], pick: [1, 2, 3] },
-  "graphicx-hub": { bg: ["#4f6cf0", "#0f1850"], pick: [1] },
+  "graphicx-hub": { bg: ["#4f6cf0", "#0f1850"], pick: ["graphicx-hub-horizontal", "graphicx-hub-stacked", "graphicx-hub-icon"] },
   "bean-bliss": { bg: ["#efe6da", "#a8957d"], pick: [1] },
-  zenfits: { bg: ["#c8d39e", "#262b1c"], pick: [1] },
+  zenfits: { bg: ["#c8d39e", "#262b1c"], pick: ["zenfits-horizontal", "zenfits-stacked", "zenfits-icon"] },
 };
 
 // Brand system (Color & type) for each project page. Orbit Bite's lives on the project itself.
