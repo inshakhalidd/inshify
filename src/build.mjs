@@ -33,16 +33,21 @@ function jpegSize(file) {
   throw new Error(`No size found in ${file}`);
 }
 
-for (const p of projects) {
-  const dir = path.join(ROOT, "assets/work", p.slug);
+function loadImages(folder, alt) {
+  const dir = path.join(ROOT, "assets/work", folder);
   const files = fs.readdirSync(dir).filter((f) => /^\d+\.(jpe?g|png|webp)$/i.test(f)).sort();
-  p.images = files.map((f, i) => {
+  return files.map((f, i) => {
     const base = f.replace(/\.[^.]+$/, "");
     const ext = path.extname(f);
     const sm = fs.existsSync(path.join(dir, `${base}-sm${ext}`)) ? `${base}-sm${ext}` : f;
     const size = /\.jpe?g$/i.test(f) ? jpegSize(path.join(dir, f)) : { w: 1200, h: 1200 };
-    return { src: `assets/work/${p.slug}/${f}`, sm: `assets/work/${p.slug}/${sm}`, ...size, alt: files.length > 1 ? `${p.alt}, ${i + 1} of ${files.length}` : p.alt };
+    return { src: `assets/work/${folder}/${f}`, sm: `assets/work/${folder}/${sm}`, ...size, alt: files.length > 1 ? `${alt}, ${i + 1} of ${files.length}` : alt };
   });
+}
+// A project is one gallery from assets/work/<slug>/, or several titled sets (p.sets) shown in order.
+for (const p of projects) {
+  p.sets = (p.sets || [{ dir: p.slug, alt: p.alt }]).map((s) => ({ ...s, images: loadImages(s.dir, s.alt) }));
+  p.images = p.sets.flatMap((s) => s.images);
 }
 const bySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 const voiceflow = fs.readFileSync(path.join(ROOT, "src/partials/voiceflow.html"), "utf8").trim();
@@ -72,10 +77,18 @@ const TOOLS = {
 const HERO_SPOTS = ["f1", "f4", "f5"];
 const toolTile = (name, size = "") => `<span class="tool-tile ${TOOLS[name].cls} ${size}" data-abbr="${TOOLS[name].abbr}" aria-hidden="true"></span>`;
 
+// Full-size image viewer for galleries and certificates (opened by any [data-lightbox] link).
+const lightbox = `<dialog class="lightbox" aria-label="Image viewer">
+  <button class="lb-close" type="button" aria-label="Close">${icon.close}</button>
+  <button class="lb-prev" type="button"><span aria-hidden="true">‹</span><span class="sr-only">Previous image</span></button>
+  <img alt="">
+  <button class="lb-next" type="button"><span aria-hidden="true">›</span><span class="sr-only">Next image</span></button>
+</dialog>`;
+
 // A loose hand-drawn loop, echoing the doodle lines in the reference portfolios.
 const doodle = (cls) => `<svg class="doodle ${cls}" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 360 C 140 120, 300 80, 380 220 S 300 440, 220 330 S 420 60, 640 170 S 880 420, 960 260 S 900 40, 1040 110 S 1180 300, 1230 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 
-function head({ title, description, ogDescription = description, root, ogImage, pagePath, intro = false }) {
+function head({ title, description, ogDescription = description, root, ogImage, pagePath, intro = false, extraFonts = "" }) {
   return `<!doctype html>
 <html lang="en" data-theme="dark" data-theme-key="inshify-theme">
 <head>
@@ -113,7 +126,8 @@ ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap">${extraFonts ? `
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?${extraFonts}&display=swap">` : ""}
 <link rel="stylesheet" href="${root}assets/css/styles.css?v=${assetVersion("assets/css/styles.css")}">
 <script src="${root}assets/js/main.js?v=${assetVersion("assets/js/main.js")}" defer></script>
 </head>`;
@@ -379,6 +393,12 @@ ${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong> <spa
         </ul>
       </div>
     </div>
+    <div class="certs" role="group" aria-labelledby="certs-title">
+      <h3 class="dash-pill" id="certs-title" data-reveal>Certificates</h3>
+      <div class="cert-grid">
+${site.certificates.map((c) => `        <a class="cert" href="assets/img/certificates/${c.img}.jpg" data-lightbox data-reveal><span class="cert-media"><img src="assets/img/certificates/${c.img}-sm.jpg" alt="${esc(`${c.kind}: ${c.title}, ${c.issuer}`)}" loading="lazy" decoding="async"></span><span class="cert-kind">${esc(c.kind)}</span><strong>${esc(c.title)}</strong> <span class="cert-issuer">${esc(c.issuer)}</span></a>`).join("\n")}
+      </div>
+    </div>
   </section>
 
 ${ctaBand("#contact")}
@@ -397,6 +417,7 @@ ${ctaBand("#contact")}
     </div>
   </section>
 </main>
+${lightbox}
 ${footer(root, v2root)}`;
 }
 
@@ -431,7 +452,7 @@ function projectPage(p, i) {
   const next = projects[(i + 1) % projects.length];
   const count = p.images.length;
   let seen = 0;
-  const gallery = galleryRows(p.images)
+  const rowsHtml = (images) => galleryRows(images)
     .map((row) => {
       const sum = row.reduce((s, img) => s + img.w / img.h, 0).toFixed(4);
       return `<div class="g-row" style="--sum:${sum};--n:${row.length}" data-reveal>${row
@@ -443,8 +464,31 @@ function projectPage(p, i) {
         .join("")}</div>`;
     })
     .join("\n    ");
+  // Several sets get a heading each; a single set is one plain gallery.
+  const gallery = p.sets.length === 1
+    ? rowsHtml(p.images)
+    : p.sets
+        .map((s, k) => `<div class="set-head" id="${esc(s.dir)}" data-reveal><h2 class="dash-pill">${num(k)} · ${esc(s.title)}</h2>${s.note ? `<p>${esc(s.note)}</p>` : ""}<span class="set-count">${s.images.length} ${s.images.length === 1 ? "design" : "designs"}</span></div>
+    ${rowsHtml(s.images)}`)
+        .join("\n    ");
+  const brandSystem = p.palette ? `
+  <section class="wrap brand-system" aria-labelledby="brand-system-title">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Brand system</p>
+        <h2 id="brand-system-title">Color <span class="light">& type</span></h2>
+      </div>
+    </div>
+    <ul class="swatches" data-reveal>
+${p.palette.map((c) => `      <li class="swatch"><span class="chip" style="background:${esc(c.hex)}"></span><span class="sw-name">${esc(c.name)}</span><span class="sw-hex">${esc(c.hex)}</span><span class="sw-use">${esc(c.use)}</span></li>`).join("\n")}
+    </ul>
+    <div class="type-grid">
+${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span class="dash-pill">${k ? "Body" : "Display"}</span><p class="type-name"${f.css ? ` style="font-family:${esc(f.css)}"` : ""}>${esc(f.name)}</p><p class="type-use">${esc(f.use)}</p>${f.css ? `<p class="type-sample" style="font-family:${esc(f.css)}">Freshly glazed every morning. Pick your orbit.</p>` : ""}</div>`).join("\n")}
+      ${p.typeSample ? `<figure class="type-in-use" data-reveal><img src="${root}${p.typeSample.src}" alt="${esc(p.typeSample.alt)}" width="${p.typeSample.w}" height="${p.typeSample.h}" loading="lazy" decoding="async"><figcaption>Type in use, from the launch posts</figcaption></figure>` : ""}
+    </div>
+  </section>` : "";
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html` })}
+  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: (p.fonts || []).some((f) => f.css) ? "family=Source+Sans+3:wght@400;600;700" : "" })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
@@ -470,7 +514,7 @@ ${header(v2root, false)}
     <div class="note" data-reveal><h2 class="dash-pill">The brief</h2><p>${esc(p.brief)}</p></div>
     ${p.idea ? `<div class="note" data-reveal><h2 class="dash-pill">The idea</h2><p>${esc(p.idea)}</p></div>` : ""}
   </section>
-
+${brandSystem}
   <section class="wrap gallery" aria-label="Project images">
     ${gallery}
   </section>
@@ -487,12 +531,7 @@ ${header(v2root, false)}
   </nav>
 </main>
 ${ctaBand(`${v2root}index.html#contact`)}
-<dialog class="lightbox" aria-label="Image viewer">
-  <button class="lb-close" type="button" aria-label="Close">${icon.close}</button>
-  <button class="lb-prev" type="button"><span aria-hidden="true">‹</span><span class="sr-only">Previous image</span></button>
-  <img alt="">
-  <button class="lb-next" type="button"><span aria-hidden="true">›</span><span class="sr-only">Next image</span></button>
-</dialog>
+${lightbox}
 ${footer(root, v2root)}`;
 }
 
@@ -515,6 +554,22 @@ ${header(root, false)}
 ${footer(root, root)}`;
 }
 fs.writeFileSync(path.join(OUT, "404.html"), notFound());
+// Old project URLs that now live inside another project keep working by forwarding there.
+const moved = { "brand-overview-boards": "simple-logics.html#brand-overview-boards" };
+for (const [from, to] of Object.entries(moved)) {
+  fs.writeFileSync(path.join(OUT, "work", `${from}.html`), `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moved | ${esc(site.name)}</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="${site.url}/work/${to.split("#")[0]}">
+<meta http-equiv="refresh" content="0; url=${to}">
+</head>
+<body><p>This project moved. <a href="${to}">Go to it</a>.</p></body>
+</html>
+`);
+}
 if (site.url) {
   const urls = ["", ...projects.map((p) => `work/${p.slug}.html`)].map((u) => `  <url><loc>${site.url}/${u}</loc></url>`);
   fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`);

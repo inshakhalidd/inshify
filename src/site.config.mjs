@@ -19,7 +19,7 @@ export const site = {
   description:
     "Inshify Studio is the portfolio of Insha, a Graphic Designer creating logos, brand identities and scroll-stopping social media design.",
   // Projects shown in "A taste of what I can create for you" (by slug).
-  featured: ["e-rising-trainers", "brewkie", "valtora"],
+  featured: ["e-rising-trainers", "orbit-bite", "brewkie", "valtora"],
   // Images used in the hero card stack: [slug, image number].
   hero: [["valtora", 1], ["e-rising-trainers", 2], ["e-rising-trainers", 6]],
   // Design software Insha uses (shown in v2).
@@ -28,6 +28,12 @@ export const site = {
   experience: [
     { name: "E-Rising Trainers", note: "Client work" },
     { name: "Simple Logics", note: "Internship" },
+  ],
+  // Certificates shown in About (images in assets/img/certificates/; digital copies where one exists).
+  certificates: [
+    { img: "01", title: "Graphic Designing Masterclass", kind: "Certificate of Achievement", issuer: "E-Rising Trainers, Karachi" },
+    { img: "02", title: "#1 Performer, Batch OCTA", kind: "Certificate of Best Performance", issuer: "E-Rising Trainers · March 2026" },
+    { img: "03", title: "Graphic Design Internship", kind: "Internship certificate", issuer: "Simple Logics · March to June 2026" },
   ],
 };
 
@@ -58,22 +64,21 @@ export const projects = [
     alt: "E-Rising Trainers promotional poster",
   },
   {
-    slug: "simple-logics", scope: "Social media posts",
+    slug: "simple-logics", scope: "Social media posts · Brand overview boards",
     title: "Simple Logics",
     label: "Internship",
     sublabel: "Simple Logics",
     tags: ["paid"],
-    brief: "Social media posts designed during my internship at Simple Logics.",
+    brief: "Social media posts and brand overview boards designed during my internship at Simple Logics.",
     alt: "Simple Logics social media post",
-  },
-  {
-    slug: "brand-overview-boards", scope: "Brand overview boards",
-    title: "Brand overview boards",
-    label: "Internship",
-    sublabel: "Simple Logics",
-    tags: ["paid"],
-    brief: "Brand overview boards for Smile Brilliant, Razor and Kinfolk, designed to build their portfolio.",
-    alt: "Brand overview board",
+    // Each set is its own gallery with a heading; images live in assets/work/<dir>/.
+    sets: [
+      { title: "Social media posts", dir: "simple-logics", alt: "Simple Logics social media post" },
+      {
+        title: "Brand overview boards", dir: "brand-overview-boards", alt: "Brand overview board",
+        note: "Boards for Smile Brilliant, Razor and Kinfolk, designed to build the agency's portfolio. Each one introduces a brand the way a client would first meet it: logo, a short overview and real product imagery on one page, from a clean clinical look for Smile Brilliant to bold red for Razor and warm earth tones for Kinfolk.",
+      },
+    ],
   },
   {
     slug: "brewkie", scope: "Brand identity · Guidelines",
@@ -85,13 +90,37 @@ export const projects = [
     alt: "Brewkie brand guidelines page",
   },
   {
-    slug: "orbit-bite", scope: "Logo · Stationery",
+    slug: "orbit-bite", scope: "Logo · Stationery · Social media posts",
     title: "Orbit Bite",
     label: "Concept project",
     sublabel: "Brand identity",
     tags: ["brand"],
-    brief: "Logo and stationery mockups for a food brand, from a concept brief.",
+    brief: "Logo, stationery and a launch set of social media posts for a doughnut brand, from a concept brief.",
     alt: "Orbit Bite logo and stationery",
+    sets: [
+      {
+        title: "Social media posts", dir: "orbit-bite-posts", alt: "Orbit Bite social media post",
+        note: "A launch set that carries the space theme into the feed: a menu of planets, a mood quiz, box sizes called Small Mission and Full Galaxy, and a boarding pass that invites followers to tag their co-pilot.",
+      },
+      { title: "Logo & stationery", dir: "orbit-bite", alt: "Orbit Bite logo and stationery" },
+    ],
+    // Brand system shown on the project page.
+    palette: [
+      { name: "Dark Chocolate", hex: "#562811", use: "Logo, headlines, text" },
+      { name: "Deep Cocoa", hex: "#372113", use: "Dark backgrounds" },
+      { name: "Mocha", hex: "#947151", use: "Borders, subtle accents" },
+      { name: "Caramel Glaze", hex: "#F0AA54", use: "Buttons, highlights" },
+      { name: "Toasted Sand", hex: "#EECBA8", use: "Warm backgrounds" },
+      { name: "Vanilla Cream", hex: "#FFF8E8", use: "Main background" },
+      { name: "Deep Cream", hex: "#F9E7CC", use: "Boxes, cards, soft surfaces" },
+      { name: "Raspberry", hex: "#C2374F", use: "Sale tags, highlight words" },
+      { name: "Blush Pink", hex: "#F9D3D0", use: "Social backgrounds" },
+    ],
+    fonts: [
+      { name: "Gampolins", use: "Logo and headlines" },
+      { name: "Source Sans", use: "Body text, prices and captions", css: "'Source Sans 3', sans-serif" },
+    ],
+    typeSample: { src: "assets/img/orbit-bite-type.jpg", w: 1200, h: 474, alt: "Orbit Bite type in use: the headline Choose Your Planet in Gampolins over a line of Source Sans" },
   },
   {
     slug: "zenfits", scope: "Logo",
@@ -156,14 +185,11 @@ const writeups = {
   "simple-logics": {
     idea: "Deep navy backgrounds and electric-blue type give a tech company a confident, premium feel. Each post makes one point, from idea to launch or faster results with AI, and backs it with a clean diagram or 3D visual that reads at a glance.",
   },
-  "brand-overview-boards": {
-    idea: "Each board introduces a brand the way a client would first meet it: logo, a short overview and real product imagery on one page. The layout adapts to each brand's character, from a clean clinical look for Smile Brilliant to bold red for Razor and warm earth tones for Kinfolk.",
-  },
   brewkie: {
     idea: "A warm coffee-brown palette and a playful cup-and-cookie mark give Brewkie a cozy, friendly personality. The guidelines cover the logo, color palette, patterns, stationery and mockups, so the brand stays consistent wherever it appears.",
   },
   "orbit-bite": {
-    idea: "The name became the idea: a bitten doughnut circled by a planet-like ring, in rich chocolate and cream. Rounded type and the tagline \"Orbit Your Taste\" keep it fun, and the stationery shows the mark working in print.",
+    idea: "The name became the idea: a bitten doughnut circled by a planet-like ring, in rich chocolate and cream. Every flavor is a planet, from Choco Saturn to Pistachio Nebula, so the menu, the posts and the packaging all tell one playful space story. Chunky rounded headlines and the tagline \"Orbit Your Taste\" keep it fun, and the stationery shows the mark working in print.",
   },
   zenfits: {
     idea: "Calm rather than loud: a refined serif wordmark with a small leaf accent and a soft sage palette position ZenFits as mindful fitness. The set includes horizontal, stacked and monogram versions, so the logo fits any space.",

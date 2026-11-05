@@ -124,7 +124,7 @@
     });
   }
 
-  // ----- Lightbox on project pages -----
+  // ----- Lightbox for project galleries and certificates -----
   var box = document.querySelector(".lightbox");
   var shots = Array.prototype.slice.call(document.querySelectorAll("[data-lightbox]"));
   if (box && shots.length && typeof box.showModal === "function") {
