@@ -116,7 +116,7 @@ export const projects = [
       { name: "Gampolins", use: "Logo and headlines" },
       { name: "Source Sans", use: "Body text, prices and captions", css: "'Source Sans 3', sans-serif" },
     ],
-    typeSample: { src: "assets/img/orbit-bite-type.jpg", w: 1200, h: 474, alt: "Orbit Bite type in use: the headline Choose Your Planet in Gampolins over a line of Source Sans" },
+    typeSample: { src: "assets/img/type/orbit-bite.jpg", w: 1200, h: 474, bg: "#f4d6b2", alt: "Orbit Bite type in use: the headline Choose Your Planet in Gampolins over a line of Source Sans" },
   },
   {
     slug: "zenfits", scope: "Logo",
@@ -229,5 +229,62 @@ const covers = {
   "bean-bliss": { bg: ["#efe6da", "#a8957d"], pick: [1] },
   zenfits: { bg: ["#c8d39e", "#262b1c"], pick: [1] },
 };
+
+// Brand system (Color & type) for each project page. Orbit Bite's lives on the project itself.
+// Palettes are sampled from the final artwork unless a note says where they come from.
+// type: [width, height, background] of assets/img/type/<slug>.jpg, a headline cropped from the work.
+const SAMPLED = "Colors sampled from the final artwork.";
+const brandKits = {
+  "e-rising-trainers": {
+    palette: [["Campaign Red", "#C2272D", "Headlines, banners, buttons"], ["Charcoal", "#2D2E2C", "Headlines and body text"], ["Paper White", "#F8F8F8", "Backgrounds"]],
+    type: [729, 238, "#fafafa"], typeAlt: "E-Rising Trainers type in use: Master Graphic Design With AI",
+  },
+  "simple-logics": {
+    palette: [["Midnight", "#000414", "Backgrounds"], ["Deep Navy", "#273452", "Cards and panels"], ["Steel Blue", "#3B5E8E", "Lines and icons"], ["Electric Cyan", "#2CBEE2", "Highlight words"], ["Cloud", "#EDEDEE", "Headlines and text"]],
+    note: "Colors sampled from the Simple Logics posts.",
+    type: [562, 367, "#00021e"], typeAlt: "Simple Logics type in use: From Idea To Launch",
+  },
+  brewkie: {
+    palette: [["Rebel", "#350E07", "Logo, dark backgrounds"], ["Brown Eyes", "#9D642F", "Accents and patterns"], ["Light Camel", "#D7B17C", "Light accents and packaging"], ["White", "#FFFFFF", "Page backgrounds"]],
+    note: "Rebel, Brown Eyes and Light Camel are the three primary colors in the Brewkie guidelines.",
+    type: [819, 546, "#794521"], typeAlt: "Brewkie type in use: the logo and Brand Guidelines title",
+  },
+  zenfits: {
+    palette: [["Forest", "#152C08", "Logo"], ["Sage", "#A3B673", "Leaf accent"], ["Olive", "#515A3E", "Secondary tone"], ["Mist", "#E3E8C0", "Backgrounds"]],
+    type: [751, 335, "#e3e8c0"], typeAlt: "ZenFits logotype",
+  },
+  "logo-design-service": {
+    palette: [["Deep Indigo", "#2D1F5D", "Logo, dark backgrounds"], ["Summit Blue", "#4163AD", "Alternate mark"], ["Lavender", "#BB95EA", "Light backgrounds"], ["Pine", "#155435", "Green variation"], ["Black", "#000000", "Reversed logo"], ["White", "#FFFFFF", "Light logo"]],
+  },
+  "graphicx-hub": {
+    palette: [["Hub Navy", "#1B2A81", "Wordmark"], ["Indigo", "#43428D", "Mark gradient"], ["White", "#FFFFFF", "Backgrounds"]],
+    type: [713, 184, "#ffffff"], typeAlt: "Graphicx Hub logo lockup",
+  },
+  "bean-bliss": {
+    palette: [["Latte", "#D8BE9E", "Packaging and accents"], ["Caramel", "#B3906A", "Accents"], ["Espresso", "#715C4C", "Logo and text"], ["Stone", "#D4D1CB", "Backgrounds"], ["Cream", "#F8F7F6", "Paper"]],
+  },
+  valtora: {
+    palette: [["Deep Violet", "#35135D", "Backgrounds"], ["Royal Purple", "#55377E", "Gradients"], ["Amethyst", "#7C5DA3", "Gradients and 3D art"], ["Lavender", "#B391D7", "Highlights"], ["Lilac White", "#F3EAF5", "Text"], ["Coin Gold", "#D69523", "Accents"]],
+    type: [815, 295, "#46256e"], typeAlt: "Valtora type in use: Wall Street Is Quietly Moving Onchain",
+  },
+  "google-ads-display": {
+    palette: [["Ramzan Red", "#9B2A2F", "Sale banners"], ["Deep Maroon", "#380703", "Banner backgrounds"], ["Slate", "#30354A", "Backgrounds"], ["Silver", "#AFAEAA", "Product banners"], ["Mist Grey", "#E3E2E0", "Light panels"]],
+    type: [294, 285, "#000000"], typeAlt: "Display ad type in use: Confidence You Can Feel",
+  },
+  "tyr-skincare": {
+    palette: [["Glow Cream", "#E2DFB1", "Backgrounds"], ["Golden Sand", "#CFC086", "Texture"], ["Deep Sage", "#3C4940", "Panels"], ["Amber", "#9B805E", "Accents"], ["Ink", "#0D1211", "Headlines and packaging"], ["White", "#FDFDFD", "Labels"]],
+    type: [994, 162, "#d6ce99"], typeAlt: "tyr Skincare type in use: Seal In The Glow",
+  },
+  "torpedo-line-consulting": {
+    palette: [["Navy", "#062149", "Headlines"], ["Signal Yellow", "#F5C959", "Highlight words"], ["Ink", "#110F17", "Backgrounds"], ["White", "#FCFDFC", "Cards"]],
+    type: [918, 270, "#ffffff"], typeAlt: "Torpedo Line Consulting type in use: Protect What Matters Most",
+  },
+};
+for (const [slug, k] of Object.entries(brandKits)) {
+  const p = projects.find((x) => x.slug === slug);
+  p.palette = k.palette.map(([name, hex, use]) => ({ name, hex, use }));
+  p.paletteNote = k.note || SAMPLED;
+  if (k.type) p.typeSample = { src: `assets/img/type/${slug}.jpg`, w: k.type[0], h: k.type[1], bg: k.type[2], alt: k.typeAlt };
+}
 
 for (const p of projects) Object.assign(p, writeups[p.slug], { cover: covers[p.slug] });

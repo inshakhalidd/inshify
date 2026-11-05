@@ -504,16 +504,17 @@ function projectPage(p, i) {
     <div class="section-head" data-reveal>
       <div>
         <p class="eyebrow">Brand system</p>
-        <h2 id="brand-system-title">Color <span class="light">& type</span></h2>
+        <h2 id="brand-system-title">${p.typeSample || p.fonts ? `Color <span class="light">& type</span>` : `Color <span class="light">palette</span>`}</h2>
       </div>
+      ${p.paletteNote ? `<p class="section-note">${esc(p.paletteNote)}</p>` : ""}
     </div>
     <ul class="swatches" data-reveal>
 ${p.palette.map((c) => `      <li class="swatch"><span class="chip" style="background:${esc(c.hex)}"></span><span class="sw-name">${esc(c.name)}</span><span class="sw-hex">${esc(c.hex)}</span><span class="sw-use">${esc(c.use)}</span></li>`).join("\n")}
     </ul>
-    <div class="type-grid">
+    ${p.typeSample || p.fonts ? `<div class="type-grid${p.fonts ? "" : " solo"}">
 ${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span class="dash-pill">${k ? "Body" : "Display"}</span><p class="type-name"${f.css ? ` style="font-family:${esc(f.css)}"` : ""}>${esc(f.name)}</p><p class="type-use">${esc(f.use)}</p>${f.css ? `<p class="type-sample" style="font-family:${esc(f.css)}">Freshly glazed every morning. Pick your orbit.</p>` : ""}</div>`).join("\n")}
-      ${p.typeSample ? `<figure class="type-in-use" data-reveal><img src="${root}${p.typeSample.src}" alt="${esc(p.typeSample.alt)}" width="${p.typeSample.w}" height="${p.typeSample.h}" loading="lazy" decoding="async"><figcaption>Type in use, from the launch posts</figcaption></figure>` : ""}
-    </div>
+      ${p.typeSample ? `<figure class="type-in-use" style="background:${esc(p.typeSample.bg)}" data-reveal><img src="${root}${p.typeSample.src}" alt="${esc(p.typeSample.alt)}" width="${p.typeSample.w}" height="${p.typeSample.h}" loading="lazy" decoding="async"><figcaption>Type in use, from the final designs</figcaption></figure>` : ""}
+    </div>` : ""}
   </section>` : "";
 
   return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: (p.fonts || []).some((f) => f.css) ? "family=Source+Sans+3:wght@400;600;700" : "" })}
