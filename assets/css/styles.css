@@ -192,8 +192,6 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
   display: block; aspect-ratio: 5 / 4; padding: clamp(18px, 3vw, 36px); border-radius: var(--radius);
   background: radial-gradient(120% 100% at 30% 0%, var(--glow-a), transparent 60%), var(--card-2); overflow: hidden;
 }
-.feat-media img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 18px 28px var(--art-shadow)); transition: transform 0.7s var(--ease); }
-.feat-row:hover .feat-media img { transform: scale(1.04) rotate(-1deg); }
 
 /* Work grid */
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -214,8 +212,6 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 .card[hidden] { display: none; }
 .card-n { position: absolute; top: 14px; left: 16px; z-index: 1; font-size: 12px; font-weight: 700; color: var(--muted); padding: 3px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--border); }
 .card-media { aspect-ratio: 4 / 3; padding: clamp(22px, 2.6vw, 30px); background: radial-gradient(120% 90% at 50% 0%, var(--card-2), var(--card)); overflow: hidden; }
-.card-media img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 20px var(--art-shadow)); transition: transform 0.6s var(--ease); }
-.card:hover .card-media img { transform: scale(1.05); }
 .card-body { padding: 16px 22px 22px; display: grid; gap: 4px; border-top: 1px solid var(--border); }
 .card h3 { font-size: 19px; letter-spacing: -0.02em; line-height: 1.25; font-weight: 700; }
 .card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
@@ -336,8 +332,6 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 .next-copy .eyebrow { margin: 0; }
 .next-title { font-size: clamp(32px, 4.4vw, 56px); font-weight: 800; letter-spacing: -0.045em; line-height: 1.02; }
 .next-media { aspect-ratio: 4 / 3; padding: 28px; background: radial-gradient(120% 100% at 30% 0%, var(--glow-a), transparent 60%), var(--card-2); }
-.next-media img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 14px 24px var(--art-shadow)); transition: transform 0.6s var(--ease); }
-.next-project:hover .next-media img { transform: scale(1.05); }
 
 /* Scroll reveal (main.js adds .reveal only below the fold) */
 .reveal { opacity: 0; translate: 0 26px; transition: opacity 0.9s ease var(--d, 0s), translate 0.9s var(--ease) var(--d, 0s), transform 0.4s var(--ease), border-color 0.25s, box-shadow 0.4s; }
@@ -487,6 +481,77 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 
 .nf-title { font-size: clamp(44px, 7vw, 84px); margin-bottom: 18px; }
 
+/* ----- Mockup covers (built from each project's artwork; sized in container-height units) ----- */
+.cover {
+  position: relative; display: block; width: 100%; height: 100%; overflow: hidden; container-type: size;
+  background: radial-gradient(110% 95% at 25% 10%, var(--c1), var(--c2));
+}
+.cover::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 50% at 80% 100%, rgba(0, 0, 0, 0.28), transparent 70%); }
+.cv {
+  position: absolute; left: 50%; top: 50%; display: block; overflow: hidden; background: #fff;
+  translate: calc(-50% + var(--x, 0cqh)) calc(-50% + var(--y, 0cqh) + var(--dy, 0cqh));
+  rotate: calc(var(--r, 0deg) * var(--fan, 1));
+  box-shadow: 0 2.4cqh 5cqh -1.6cqh rgba(0, 0, 0, 0.5), 0 0.4cqh 1.2cqh rgba(0, 0, 0, 0.18);
+  transition: translate 0.7s var(--ease), rotate 0.7s var(--ease);
+}
+.cv img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Phone with the hero post, two posts fanned behind */
+.cv-post { height: 54cqh; aspect-ratio: var(--a); border-radius: 1.6cqh; }
+.cv-post.p1 { --x: -38cqh; --y: -5cqh; --r: -9deg; }
+.cv-post.p2 { --x: -17cqh; --y: 9cqh; --r: 4deg; }
+.cv-phone {
+  z-index: 2; height: 88cqh; aspect-ratio: 9 / 19; padding: 1.5cqh; border-radius: 6.4cqh; background: #0d0d10;
+  --x: 19cqh; --y: 7cqh; --r: 3deg;
+  box-shadow: 0 4cqh 8cqh -2cqh rgba(0, 0, 0, 0.6), inset 0 0 0 0.35cqh #2a2a30;
+}
+.cv-phone::before { content: ""; position: absolute; z-index: 1; top: 2.6cqh; left: 50%; width: 11cqh; height: 2.8cqh; translate: -50% 0; border-radius: 2cqh; background: #0d0d10; }
+.cv-phone .screen { display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 5cqh; background: #fff; }
+.cv-phone .bar { display: flex; align-items: center; gap: 1.4cqh; flex: none; height: 11cqh; padding: 4cqh 2.2cqh 0; }
+.cv-phone .bar i { width: 3.6cqh; height: 3.6cqh; border-radius: 50%; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.cv-phone .bar b { width: 13cqh; height: 1.3cqh; border-radius: 1cqh; background: #dcdce0; }
+.cv-phone .screen img { flex: none; height: auto; aspect-ratio: auto; }
+.cv-phone .acts { display: flex; gap: 1.4cqh; padding: 2cqh 2.2cqh; }
+.cv-phone .acts i { width: 2.6cqh; height: 2.6cqh; border-radius: 50%; border: 0.35cqh solid #2b2b30; }
+.cover-phone.solo .cv-phone { --x: 0cqh; --r: -3deg; }
+
+/* Cascading boards (guidelines, decks) */
+.cv-board { height: 42cqh; aspect-ratio: var(--a); border-radius: 1.2cqh; }
+.cv-board.n1 { --x: -15cqh; --y: -15cqh; --r: -7deg; }
+.cv-board.n2 { --x: 2cqh; --y: 0cqh; --r: -1deg; }
+.cv-board.n3 { --x: 15cqh; --y: 15cqh; --r: 5deg; }
+
+/* Browser window with a floating banner */
+.cv-browser { height: 56cqh; aspect-ratio: calc(var(--a) * 0.94); display: flex; flex-direction: column; border-radius: 1.6cqh; background: #f1f1f4; --x: -9cqh; --y: -4cqh; --r: -2deg; }
+.cv-browser .dots { display: flex; gap: 0.9cqh; flex: none; padding: 1.4cqh 1.8cqh; }
+.cv-browser .dots i { width: 1.4cqh; height: 1.4cqh; border-radius: 50%; background: #c9c9cf; }
+.cv-browser .dots i:first-child { background: #ff5f57; }
+.cv-browser .dots i:nth-child(2) { background: #febc2e; }
+.cv-browser .dots i:nth-child(3) { background: #28c840; }
+.cv-browser img { flex: 1; min-height: 0; }
+.cv-float { z-index: 2; height: 36cqh; aspect-ratio: var(--a); border-radius: 1.4cqh; --x: 40cqh; --y: 17cqh; --r: 5deg; }
+
+/* Fanned tiles (logo options) */
+.cv-tile { height: 50cqh; aspect-ratio: var(--a); border-radius: 2cqh; }
+.cv-tile.n1 { --x: -27cqh; --y: 2cqh; --r: -9deg; }
+.cv-tile.n2 { z-index: 2; height: 60cqh; --x: 0cqh; --y: -2cqh; --r: 0deg; }
+.cv-tile.n3 { --x: 27cqh; --y: 3cqh; --r: 8deg; }
+
+/* One framed piece */
+.cv-frame { height: 72cqh; max-width: 92cqw; aspect-ratio: var(--a); border-radius: 2cqh; --r: -4deg; }
+
+/* Hover: pieces lift and fan a little wider */
+.card:hover .cv, .feat-row:hover .cv, .next-project:hover .cv { --fan: 1.45; --dy: -2cqh; }
+.card:hover .cv-phone, .feat-row:hover .cv-phone, .next-project:hover .cv-phone { --dy: -4cqh; }
+
+/* Where covers sit */
+.card-media, .feat-media, .next-media { padding: 0; background: none; }
+.case-cover { margin-top: clamp(8px, 2vw, 20px); }
+.cover-hero { height: auto; aspect-ratio: 21 / 9; border-radius: calc(var(--radius) + 6px); }
+@media (max-width: 640px) {
+  .cover-hero { aspect-ratio: 4 / 3; }
+}
+
 /* Project galleries split into titled sets (e.g. posts, then brand boards) */
 .set-head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 10px 24px; margin-top: clamp(28px, 4vw, 48px); padding-top: 22px; border-top: 1px solid var(--border); }
 .set-head:first-child { margin-top: 0; }
@@ -577,9 +642,6 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 @keyframes drop { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
 @keyframes glow-in { from { opacity: 0; scale: 0.7; } to { opacity: 1; scale: 1; } }
 
-/* Scroll reveal for artwork: a soft zoom as it fades in */
-.reveal .feat-media img, .reveal .card-media img { scale: 1.06; transition: scale 1.2s var(--ease) var(--d, 0s), transform 0.6s var(--ease); }
-.reveal.in .feat-media img, .reveal.in .card-media img { scale: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .intro .intro-screen { display: none; }

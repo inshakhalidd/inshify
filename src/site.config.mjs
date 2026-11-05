@@ -218,4 +218,22 @@ const writeups = {
     idea: "A dark, techy background frames a bright white card, so the message reads first. Yellow and navy split the headline \"Protect what matters most\", and one \"Consult now\" button gives a single clear next step.",
   },
 };
-for (const p of projects) Object.assign(p, writeups[p.slug]);
+// Mockup covers for cards, featured rows and project pages.
+// kind: phone | stack | screen | tiles | frame. bg: [light, dark] brand colors for the backdrop.
+// pick: image numbers (1 = first image, counting across sets). For phone and screen the first is the hero piece.
+const covers = {
+  "e-rising-trainers": { kind: "phone", bg: ["#e0474c", "#6d1015"], pick: [6, 1, 2] },
+  "simple-logics": { kind: "phone", bg: ["#2f45b8", "#090d24"], pick: [1, 2, 4] },
+  "orbit-bite": { kind: "phone", bg: ["#f9d3d0", "#f0aa54"], pick: [1, 2, 6] },
+  valtora: { kind: "phone", bg: ["#8a5ad6", "#24104a"], pick: [1, 2, 6] },
+  "tyr-skincare": { kind: "phone", bg: ["#e2d9a3", "#6f6a3f"], pick: [1, 2, 3] },
+  "torpedo-line-consulting": { kind: "phone", bg: ["#3c63b8", "#0e1730"], pick: [1] },
+  brewkie: { kind: "stack", bg: ["#a86d3e", "#2f1a0d"], pick: [3, 2, 1] },
+  "google-ads-display": { kind: "screen", bg: ["#4a5078", "#10121c"], pick: [3, 2] },
+  "logo-design-service": { kind: "tiles", bg: ["#b48ee6", "#24173f"], pick: [2, 1, 3] },
+  "graphicx-hub": { kind: "frame", bg: ["#4f6cf0", "#0f1850"], pick: [1] },
+  "bean-bliss": { kind: "frame", bg: ["#efe6da", "#a8957d"], pick: [1] },
+  zenfits: { kind: "frame", bg: ["#c8d39e", "#262b1c"], pick: [1] },
+};
+
+for (const p of projects) Object.assign(p, writeups[p.slug], { cover: covers[p.slug] });

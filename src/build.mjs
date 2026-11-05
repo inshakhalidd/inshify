@@ -205,11 +205,34 @@ function badgeKind(p) {
 }
 const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
 
+// Mockup cover built from a project's own artwork (p.cover in the config):
+// phone = first pick on a phone screen with the rest fanned behind; stack = cascading boards;
+// screen = first pick in a browser window with the rest floating; tiles = fanned squares; frame = one tilted card.
+function cover(p, root, cls = "") {
+  const c = p.cover;
+  const pick = c.pick.map((n) => p.images[n - 1]);
+  const im = (img) => `<img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async">`;
+  const piece = (img, k) => `<span class="cv cv-${k}" style="--a:${(img.w / img.h).toFixed(4)}">${im(img)}</span>`;
+  const [main, ...rest] = pick;
+  let inner;
+  if (c.kind === "phone") {
+    inner = rest.map((img, k) => piece(img, `post p${k + 1}`)).join("") +
+      `<span class="cv cv-phone"><span class="screen"><span class="bar"><i></i><b></b></span>${im(main)}<span class="acts"><i></i><i></i><i></i></span></span></span>`;
+  } else if (c.kind === "screen") {
+    inner = `<span class="cv cv-browser" style="--a:${(main.w / main.h).toFixed(4)}"><span class="dots"><i></i><i></i><i></i></span>${im(main)}</span>` + rest.map((img, k) => piece(img, `float f${k + 1}`)).join("");
+  } else if (c.kind === "stack" || c.kind === "tiles") {
+    inner = pick.map((img, k) => piece(img, `${c.kind === "stack" ? "board" : "tile"} n${k + 1}`)).join("");
+  } else {
+    inner = piece(main, "frame");
+  }
+  const solo = c.kind === "phone" && !rest.length ? " solo" : "";
+  return `<span class="cover cover-${c.kind}${solo}${cls ? ` ${cls}` : ""}" style="--c1:${c.bg[0]};--c2:${c.bg[1]}" aria-hidden="true">${inner}</span>`;
+}
+
 function card(p, root, v2root, i) {
-  const img = p.images[0];
   return `<article class="card" data-tags="${p.tags.join(" ")}">
   <span class="card-n">${num(i)}</span>
-  <div class="card-media"><img src="${root}${img.sm}" alt="${esc(img.alt)}" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></div>
+  <div class="card-media">${cover(p, root)}</div>
   <div class="card-body">
     <span class="badge b-${badgeKind(p)}">${esc(fullLabel(p))}</span>
     <h3><a href="${v2root}work/${p.slug}.html">${esc(p.title)}</a></h3>
@@ -288,7 +311,6 @@ ${header(v2root, true)}
     <div class="feat-list">
 ${featured
   .map((p, i) => {
-    const img = p.slug === "e-rising-trainers" ? p.images[1] : p.images[0];
     return `      <article class="feat-row${i % 2 ? " flip" : ""}" data-reveal>
         <div class="feat-copy">
           <span class="feat-n">${num(i)}</span>
@@ -300,7 +322,7 @@ ${featured
           </dl>
           <a class="btn btn-ghost" href="work/${p.slug}.html">View project ${icon.arrow}</a>
         </div>
-        <a class="feat-media" href="work/${p.slug}.html" tabindex="-1" aria-hidden="true"><img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></a>
+        <a class="feat-media" href="work/${p.slug}.html" tabindex="-1" aria-hidden="true">${cover(p, root)}</a>
       </article>`;
   })
   .join("\n")}
@@ -510,6 +532,8 @@ ${header(v2root, false)}
     </dl>
   </header>
 
+  <div class="wrap case-cover" data-reveal>${cover(p, root, "cover-hero")}</div>
+
   <section class="wrap case-notes" aria-label="About this project">
     <div class="note" data-reveal><h2 class="dash-pill">The brief</h2><p>${esc(p.brief)}</p></div>
     ${p.idea ? `<div class="note" data-reveal><h2 class="dash-pill">The idea</h2><p>${esc(p.idea)}</p></div>` : ""}
@@ -526,7 +550,7 @@ ${brandSystem}
         <span class="next-title">${mixTitle(next.title)}</span>
         <span class="paren">(${esc(fullLabel(next))})</span>
       </div>
-      <div class="next-media"><img src="${root}${next.images[0].sm}" alt="" width="${next.images[0].w}" height="${next.images[0].h}" loading="lazy" decoding="async"></div>
+      <div class="next-media">${cover(next, root)}</div>
     </a>
   </nav>
 </main>
