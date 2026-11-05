@@ -42,13 +42,11 @@ export const filters = [
   { key: "all", label: "All" },
   { key: "paid", label: "Paid & internship" },
   { key: "brand", label: "Brand identity" },
-  { key: "logos", label: "Logos" },
-  { key: "carousels", label: "Carousels" },
-  { key: "ads", label: "Ads" },
-  { key: "samples", label: "Samples" },
+  { key: "logos", label: "Logo design" },
+  { key: "social", label: "Social media design" },
+  { key: "ads", label: "Ads & print" },
 ];
 
-const SAMPLE = "Sample work";
 
 // Order, titles, labels and descriptions follow Insha-Works.pdf exactly.
 // `brief` comes from the works PDF.
@@ -83,8 +81,7 @@ export const projects = [
   {
     slug: "brewkie", scope: "Brand identity · Guidelines",
     title: "Brewkie",
-    label: "Concept project",
-    sublabel: "Brand identity",
+    label: "Brand identity",
     tags: ["brand"],
     brief: "Brand identity and guidelines for a coffee brand, from a concept brief.",
     alt: "Brewkie brand guidelines page",
@@ -92,8 +89,7 @@ export const projects = [
   {
     slug: "orbit-bite", scope: "Logo · Stationery · Social media posts",
     title: "Orbit Bite",
-    label: "Concept project",
-    sublabel: "Brand identity",
+    label: "Brand identity",
     tags: ["brand"],
     brief: "Logo, stationery and a launch set of social media posts for a doughnut brand, from a concept brief.",
     alt: "Orbit Bite logo and stationery",
@@ -125,8 +121,7 @@ export const projects = [
   {
     slug: "zenfits", scope: "Logo",
     title: "ZenFits",
-    label: "Concept project",
-    sublabel: "Brand identity",
+    label: "Brand identity",
     tags: ["brand"],
     brief: "Logo for a fitness brand, from a concept brief.",
     alt: "ZenFits logo variations and color palette",
@@ -134,7 +129,7 @@ export const projects = [
   {
     slug: "logo-design-service", scope: "Logo concepts",
     title: "Logo Design Service: Concept Options",
-    label: "Logo service",
+    label: "Logo design",
     tags: ["logos"],
     brief: "Three logo directions presented as options. Concept work, not used by any client.",
     alt: "Deep Summit logo concept option",
@@ -142,7 +137,7 @@ export const projects = [
   {
     slug: "graphicx-hub", scope: "Logo",
     title: "Graphicx Hub",
-    label: "Logo",
+    label: "Logo design",
     tags: ["logos"],
     brief: "Logo design for a graphics community brand, from a concept brief.",
     alt: "Graphicx Hub logo, stacked and horizontal",
@@ -150,7 +145,7 @@ export const projects = [
   {
     slug: "bean-bliss", scope: "Logo · Stationery",
     title: "Bean Bliss",
-    label: "Logo",
+    label: "Logo design",
     tags: ["logos"],
     brief: 'Logo of a "B" joined with a coffee bean, with stationery mockups.',
     alt: "Bean Bliss logo on stationery mockups",
@@ -158,22 +153,21 @@ export const projects = [
   {
     slug: "valtora", scope: "Six-slide carousel",
     title: "Carousel Design Service: Valtora",
-    label: "Concept project",
-    sublabel: "Carousel service",
-    tags: ["carousels"],
+    label: "Social media design",
+    tags: ["social"],
     brief: "Six-slide carousel built to show the carousel design service. Concept work.",
     alt: "Valtora carousel slide",
   },
   {
     slug: "google-ads-display", scope: "Display ad banners",
     title: "Google Ads Display Design",
-    label: "Google Ads service",
+    label: "Ads & print",
     tags: ["ads"],
-    brief: "Display ad banners in one set. Sample work.",
+    brief: "Display ad banners in one set.",
     alt: "Google Ads display banner set",
   },
-  { slug: "tyr-skincare", scope: "Social media posts", title: "tyr Skincare", label: SAMPLE, tags: ["samples"], brief: "Social media post samples for a skincare brand.", alt: "tyr Skincare social media post sample" },
-  { slug: "torpedo-line-consulting", scope: "Social post", title: "Torpedo Line Consulting", label: SAMPLE, tags: ["samples"], brief: "Social post sample.", alt: "Torpedo Line Consulting social post sample" },
+  { slug: "tyr-skincare", scope: "Social media posts", title: "tyr Skincare", label: "Social media design", tags: ["social"], brief: "Social media post samples for a skincare brand.", alt: "tyr Skincare social media post sample" },
+  { slug: "torpedo-line-consulting", scope: "Social post", title: "Torpedo Line Consulting", label: "Social media design", tags: ["social"], brief: "Social post sample.", alt: "Torpedo Line Consulting social post sample" },
 ];
 
 // Project write-ups: "The idea" on each project page, plus fuller briefs for the samples.
@@ -218,22 +212,22 @@ const writeups = {
     idea: "A dark, techy background frames a bright white card, so the message reads first. Yellow and navy split the headline \"Protect what matters most\", and one \"Consult now\" button gives a single clear next step.",
   },
 };
-// Mockup covers for cards, featured rows and project pages.
-// kind: phone | stack | screen | tiles | frame. bg: [light, dark] brand colors for the backdrop.
-// pick: image numbers (1 = first image, counting across sets). For phone and screen the first is the hero piece.
+// Covers for cards, featured rows and the next-project link.
+// bg: [light, dark] brand colors for the backdrop.
+// pick: image numbers (1 = first image, counting across sets): the lead piece, then up to two glimpses from inside.
 const covers = {
-  "e-rising-trainers": { kind: "phone", bg: ["#e0474c", "#6d1015"], pick: [6, 1, 2] },
-  "simple-logics": { kind: "phone", bg: ["#2f45b8", "#090d24"], pick: [1, 2, 4] },
-  "orbit-bite": { kind: "phone", bg: ["#f9d3d0", "#f0aa54"], pick: [1, 2, 6] },
-  valtora: { kind: "phone", bg: ["#8a5ad6", "#24104a"], pick: [1, 2, 6] },
-  "tyr-skincare": { kind: "phone", bg: ["#e2d9a3", "#6f6a3f"], pick: [1, 2, 3] },
-  "torpedo-line-consulting": { kind: "phone", bg: ["#3c63b8", "#0e1730"], pick: [1] },
-  brewkie: { kind: "stack", bg: ["#a86d3e", "#2f1a0d"], pick: [3, 2, 1] },
-  "google-ads-display": { kind: "screen", bg: ["#4a5078", "#10121c"], pick: [3, 2] },
-  "logo-design-service": { kind: "tiles", bg: ["#b48ee6", "#24173f"], pick: [2, 1, 3] },
-  "graphicx-hub": { kind: "frame", bg: ["#4f6cf0", "#0f1850"], pick: [1] },
-  "bean-bliss": { kind: "frame", bg: ["#efe6da", "#a8957d"], pick: [1] },
-  zenfits: { kind: "frame", bg: ["#c8d39e", "#262b1c"], pick: [1] },
+  "e-rising-trainers": { bg: ["#e0474c", "#6d1015"], pick: [6, 1, 3] },
+  "simple-logics": { bg: ["#2f45b8", "#090d24"], pick: [1, 5, 2] },
+  "orbit-bite": { bg: ["#f9d3d0", "#f0aa54"], pick: [1, 7, 8] },
+  valtora: { bg: ["#8a5ad6", "#24104a"], pick: [1, 2, 3] },
+  "tyr-skincare": { bg: ["#e2d9a3", "#6f6a3f"], pick: [1, 2, 3] },
+  "torpedo-line-consulting": { bg: ["#3c63b8", "#0e1730"], pick: [1] },
+  brewkie: { bg: ["#a86d3e", "#2f1a0d"], pick: [1, 2, 3] },
+  "google-ads-display": { bg: ["#4a5078", "#10121c"], pick: [3, 1, 2] },
+  "logo-design-service": { bg: ["#b48ee6", "#24173f"], pick: [1, 2, 3] },
+  "graphicx-hub": { bg: ["#4f6cf0", "#0f1850"], pick: [1] },
+  "bean-bliss": { bg: ["#efe6da", "#a8957d"], pick: [1] },
+  zenfits: { bg: ["#c8d39e", "#262b1c"], pick: [1] },
 };
 
 for (const p of projects) Object.assign(p, writeups[p.slug], { cover: covers[p.slug] });

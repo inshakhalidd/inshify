@@ -168,7 +168,6 @@ function header(v2root, home) {
 function footer(root, v2root) {
   return `<footer class="site-footer">
   <div class="wrap">
-    <div class="footer-mark" aria-hidden="true"></div>
     <div class="footer-inner">
       <p class="copy">© ${YEAR} Inshify Studio · ${esc(site.role)}${isPlaceholder(site.city) ? "" : ` · ${esc(site.city)}`}</p>
       <nav class="footer-links" aria-label="Social">
@@ -212,47 +211,23 @@ const endBand = (contactHref) => `<section class="end-band" aria-labelledby="end
   ${ticker(["Let’s Create", "Let’s Collaborate", "Let’s Talk", "Let’s Connect"], "•", "ticker-cream")}
 </section>`;
 
-// Badge color per project type, so paid, internship, concept, service and sample work read differently.
-function badgeKind(p) {
-  if (p.label === "Paid client work") return "paid";
-  if (p.label === "Internship") return "intern";
-  if (p.label === "Sample work") return "sample";
-  if (/service/i.test(p.label)) return "service";
-  return "concept"; // Brand identity / Logo concept projects
-}
+// Badge color per label: paid and internship work, then the service each project falls under.
+const BADGES = { "Paid client work": "paid", Internship: "intern", "Brand identity": "brand", "Logo design": "logo", "Social media design": "social", "Ads & print": "ads" };
+const badgeKind = (p) => BADGES[p.label] || "brand";
 const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
 
-// Covers built from a project's own artwork (p.cover in the config).
-// By default a clean poster: the hero piece upright on the brand gradient (cards, featured rows, project heroes).
-// With mockup = true, a scene shown under the project cover:
-// phone = first pick on a phone screen with the rest fanned behind; stack = cascading boards;
-// screen = first pick in a browser window with the rest floating; tiles = fanned squares.
-const hasScene = (p) => p.cover.kind !== "frame";
-function cover(p, root, cls = "", mockup = false) {
-  const c = p.cover;
-  const pick = c.pick.map((n) => p.images[n - 1]);
-  const big = cls.includes("cover-hero");
-  const im = (img) => `<img src="${root}${big ? img.src : img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async">`;
-  const piece = (img, k) => `<span class="cv cv-${k}" style="--a:${(img.w / img.h).toFixed(4)}">${im(img)}</span>`;
-  const style = `--c1:${c.bg[0]};--c2:${c.bg[1]}`;
-  if (!mockup) {
-    const hero = c.kind === "stack" ? pick[pick.length - 1] : c.kind === "tiles" ? pick[Math.floor(pick.length / 2)] : pick[0];
-    return `<span class="cover cover-poster${cls ? ` ${cls}` : ""}" style="${style}" aria-hidden="true">${piece(hero, "hero")}</span>`;
-  }
-  const [main, ...rest] = pick;
-  let inner;
-  if (c.kind === "phone") {
-    inner = rest.map((img, k) => piece(img, `post p${k + 1}`)).join("") +
-      `<span class="cv cv-phone"><span class="screen"><span class="bar"><i></i><b></b></span>${im(main)}<span class="acts"><i></i><i></i><i></i></span></span></span>`;
-  } else if (c.kind === "screen") {
-    inner = `<span class="cv cv-browser" style="--a:${(main.w / main.h).toFixed(4)}"><span class="dots"><i></i><i></i><i></i></span>${im(main)}</span>` + rest.map((img, k) => piece(img, `float f${k + 1}`)).join("");
-  } else if (c.kind === "stack" || c.kind === "tiles") {
-    inner = pick.map((img, k) => piece(img, `${c.kind === "stack" ? "board" : "tile"} n${k + 1}`)).join("");
-  } else {
-    inner = piece(main, "frame");
-  }
-  const solo = c.kind === "phone" && !rest.length ? " solo" : "";
-  return `<span class="cover cover-${c.kind}${solo}${cls ? ` ${cls}` : ""}" style="${style}" aria-hidden="true">${inner}</span>`;
+// Cover for cards, featured rows and the next-project link: a glimpse inside the project on its brand gradient
+// (p.cover in the config). One pick is shown alone; with more, the first leads and the next two sit beside it.
+function cover(p, root) {
+  const { bg, pick } = p.cover;
+  const piece = (n, k) => {
+    const img = p.images[n - 1];
+    return `<span class="cv cv-${k}" style="--a:${(img.w / img.h).toFixed(4)}"><img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></span>`;
+  };
+  const lead = p.images[pick[0] - 1];
+  const wide = lead.w / lead.h > 1.2 ? " glimpse-wide" : ""; // landscape leads go across the top
+  const inner = pick.length === 1 ? piece(pick[0], "hero") : `<span class="glimpse${wide}">${piece(pick[0], "lead")}${pick.slice(1, 3).map((n) => piece(n, "side")).join("")}</span>`;
+  return `<span class="cover" style="--c1:${bg[0]};--c2:${bg[1]}" aria-hidden="true">${inner}</span>`;
 }
 
 function card(p, root, v2root, i) {
@@ -562,10 +537,6 @@ ${header(v2root, false)}
       <div class="case-meta-cta"><a class="btn btn-primary" href="${v2root}index.html#contact">Hire me ${icon.arrow}</a></div>
     </dl>
   </header>
-
-  <div class="wrap case-cover" data-reveal>${cover(p, root, "cover-hero")}</div>
-${hasScene(p) ? `  <div class="wrap case-scene" data-reveal>${cover(p, root, "cover-hero cover-scene", true)}</div>
-` : ""}
 
   <section class="wrap case-notes" aria-label="About this project">
     <div class="note" data-reveal><h2 class="dash-pill">The brief</h2><p>${esc(p.brief)}</p></div>

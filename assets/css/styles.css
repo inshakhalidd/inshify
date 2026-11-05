@@ -227,9 +227,10 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--dot, var(--muted)); flex: none; }
 .b-paid { --dot: #4fb07e; }
 .b-intern { --dot: #e0a23b; }
-.b-concept { --dot: #9fb6dc; }
-.b-service { --dot: #c792ea; }
-.b-sample { --dot: #9a9a9e; }
+.b-brand { --dot: #9fb6dc; }
+.b-logo { --dot: #f5d35e; }
+.b-social { --dot: #c792ea; }
+.b-ads { --dot: #f08a7a; }
 
 
 /* Services */
@@ -282,15 +283,9 @@ a.tile:hover, button.tile:hover { border-color: var(--soft); transform: translat
 .tile-accent p { color: rgba(255, 255, 255, 0.78); }
 a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
-/* Footer with giant wordmark */
+/* Footer */
 .site-footer { margin-top: clamp(64px, 9vw, 112px); padding-bottom: 104px; overflow: hidden; }
-.footer-mark {
-  width: 100%; aspect-ratio: 420 / 182; max-height: 300px; background: var(--card-2); margin-bottom: 28px;
-  -webkit-mask: url("../img/inshify-wordmark.png") left center / contain no-repeat;
-  mask: url("../img/inshify-wordmark.png") left center / contain no-repeat;
-}
-[data-theme="dark"] .footer-mark { background: #262626; }
-.footer-inner { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px 40px; align-items: start; border-top: 1px solid var(--border); padding-top: 26px; }
+.footer-inner { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px 40px; align-items: start; padding-top: 32px; }
 .footer-links { display: flex; gap: 24px; font-size: 14px; font-weight: 600; flex-wrap: wrap; }
 .footer-links a:hover { color: var(--soft); }
 .copy, .disclaimer { font-size: 13px; color: var(--muted); }
@@ -473,83 +468,31 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 
 .nf-title { font-size: clamp(44px, 7vw, 84px); margin-bottom: 18px; }
 
-/* ----- Mockup covers (built from each project's artwork; sized in container-height units) ----- */
+/* ----- Covers: the hero piece upright on the brand gradient (sized in container units) ----- */
 .cover {
   position: relative; display: block; width: 100%; height: 100%; overflow: hidden; container-type: size;
   background: radial-gradient(110% 95% at 25% 10%, var(--c1), var(--c2));
 }
 .cover::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 50% at 80% 100%, rgba(0, 0, 0, 0.28), transparent 70%); }
-.cv {
+.cv-hero {
   position: absolute; left: 50%; top: 50%; display: block; overflow: hidden; background: #fff;
-  translate: calc(-50% + var(--x, 0cqh)) calc(-50% + var(--y, 0cqh) + var(--dy, 0cqh));
-  rotate: calc(var(--r, 0deg) * var(--fan, 1));
+  width: min(84cqw, calc(76cqh * var(--a))); aspect-ratio: var(--a); border-radius: 1.6cqh;
+  translate: -50% calc(-50% + var(--dy, 0cqh));
   box-shadow: 0 2.4cqh 5cqh -1.6cqh rgba(0, 0, 0, 0.5), 0 0.4cqh 1.2cqh rgba(0, 0, 0, 0.18);
-  transition: translate 0.7s var(--ease), rotate 0.7s var(--ease);
+  transition: translate 0.7s var(--ease);
 }
-.cv img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-/* Phone with the hero post, two posts fanned behind */
-.cv-post { height: 54cqh; aspect-ratio: var(--a); border-radius: 1.6cqh; }
-.cv-post.p1 { --x: -38cqh; --y: -5cqh; --r: -9deg; }
-.cv-post.p2 { --x: -17cqh; --y: 9cqh; --r: 4deg; }
-.cv-phone {
-  z-index: 2; height: 88cqh; aspect-ratio: 9 / 19; padding: 1.5cqh; border-radius: 6.4cqh; background: #0d0d10;
-  --x: 19cqh; --y: 7cqh; --r: 3deg;
-  box-shadow: 0 4cqh 8cqh -2cqh rgba(0, 0, 0, 0.6), inset 0 0 0 0.35cqh #2a2a30;
-}
-.cv-phone::before { content: ""; position: absolute; z-index: 1; top: 2.6cqh; left: 50%; width: 11cqh; height: 2.8cqh; translate: -50% 0; border-radius: 2cqh; background: #0d0d10; }
-.cv-phone .screen { display: flex; flex-direction: column; height: 100%; overflow: hidden; border-radius: 5cqh; background: #fff; }
-.cv-phone .bar { display: flex; align-items: center; gap: 1.4cqh; flex: none; height: 11cqh; padding: 4cqh 2.2cqh 0; }
-.cv-phone .bar i { width: 3.6cqh; height: 3.6cqh; border-radius: 50%; background: linear-gradient(135deg, var(--c1), var(--c2)); }
-.cv-phone .bar b { width: 13cqh; height: 1.3cqh; border-radius: 1cqh; background: #dcdce0; }
-.cv-phone .screen img { flex: none; height: auto; aspect-ratio: auto; }
-.cv-phone .acts { display: flex; gap: 1.4cqh; padding: 2cqh 2.2cqh; }
-.cv-phone .acts i { width: 2.6cqh; height: 2.6cqh; border-radius: 50%; border: 0.35cqh solid #2b2b30; }
-.cover-phone.solo .cv-phone { --x: 0cqh; --r: -3deg; }
-
-/* Cascading boards (guidelines, decks) */
-.cv-board { height: 42cqh; aspect-ratio: var(--a); border-radius: 1.2cqh; }
-.cv-board.n1 { --x: -15cqh; --y: -15cqh; --r: -7deg; }
-.cv-board.n2 { --x: 2cqh; --y: 0cqh; --r: -1deg; }
-.cv-board.n3 { --x: 15cqh; --y: 15cqh; --r: 5deg; }
-
-/* Browser window with a floating banner */
-.cv-browser { height: 56cqh; aspect-ratio: calc(var(--a) * 0.94); display: flex; flex-direction: column; border-radius: 1.6cqh; background: #f1f1f4; --x: -9cqh; --y: -4cqh; --r: -2deg; }
-.cv-browser .dots { display: flex; gap: 0.9cqh; flex: none; padding: 1.4cqh 1.8cqh; }
-.cv-browser .dots i { width: 1.4cqh; height: 1.4cqh; border-radius: 50%; background: #c9c9cf; }
-.cv-browser .dots i:first-child { background: #ff5f57; }
-.cv-browser .dots i:nth-child(2) { background: #febc2e; }
-.cv-browser .dots i:nth-child(3) { background: #28c840; }
-.cv-browser img { flex: 1; min-height: 0; }
-.cv-float { z-index: 2; height: 36cqh; aspect-ratio: var(--a); border-radius: 1.4cqh; --x: 40cqh; --y: 17cqh; --r: 5deg; }
-
-/* Fanned tiles (logo options) */
-.cv-tile { height: 50cqh; aspect-ratio: var(--a); border-radius: 2cqh; }
-.cv-tile.n1 { --x: -27cqh; --y: 2cqh; --r: -9deg; }
-.cv-tile.n2 { z-index: 2; height: 60cqh; --x: 0cqh; --y: -2cqh; --r: 0deg; }
-.cv-tile.n3 { --x: 27cqh; --y: 3cqh; --r: 8deg; }
-
-/* One framed piece */
-.cv-frame { height: 72cqh; max-width: 92cqw; aspect-ratio: var(--a); border-radius: 2cqh; --r: -4deg; }
-
-/* Poster cover: the hero piece upright on the brand gradient */
-.cv-hero { width: min(84cqw, calc(76cqh * var(--a))); height: auto; aspect-ratio: var(--a); border-radius: 1.6cqh; }
-
-/* Mockup scene under a project's cover: a soft studio backdrop tinted with the brand color */
-.cover-scene { background: radial-gradient(70% 90% at 50% 35%, color-mix(in srgb, var(--c1) 30%, #f4f1ea), color-mix(in srgb, var(--c2) 18%, #d8d3c9)); }
-.case-scene { margin-top: 16px; }
-
-/* Hover: pieces lift and fan a little wider */
-.card:hover .cv, .feat-row:hover .cv, .next-project:hover .cv { --fan: 1.45; --dy: -2cqh; }
-.card:hover .cv-phone, .feat-row:hover .cv-phone, .next-project:hover .cv-phone { --dy: -4cqh; }
-
-/* Where covers sit */
+.cv-hero img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Glimpse: the lead piece plus two pieces from inside the project */
+.glimpse { position: absolute; inset: 9cqh 7cqw; display: grid; grid-template-columns: 1.5fr 1fr; grid-template-rows: 1fr 1fr; gap: 2.8cqh; }
+.cv-lead, .cv-side { position: relative; display: block; overflow: hidden; border-radius: 1.6cqh; background: #fff; box-shadow: 0 2cqh 4cqh -1.6cqh rgba(0, 0, 0, 0.5), 0 0.4cqh 1cqh rgba(0, 0, 0, 0.16); transition: translate 0.7s var(--ease); }
+.cv-lead { grid-row: 1 / 3; }
+.glimpse-wide { grid-template-columns: 1fr 1fr; grid-template-rows: 1.45fr 1fr; }
+.glimpse-wide .cv-lead { grid-row: 1; grid-column: 1 / 3; }
+.cv-lead img, .cv-side img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.card:hover .cv-hero, .feat-row:hover .cv-hero, .next-project:hover .cv-hero { --dy: -2.5cqh; }
+.card:hover .cv-lead, .feat-row:hover .cv-lead, .next-project:hover .cv-lead { translate: 0 -2cqh; }
+.card:hover .cv-side, .feat-row:hover .cv-side, .next-project:hover .cv-side { translate: 1.4cqh 0; }
 .card-media, .feat-media, .next-media { padding: 0; background: none; }
-.case-cover { margin-top: clamp(8px, 2vw, 20px); }
-.cover-hero { height: auto; aspect-ratio: 21 / 9; border-radius: calc(var(--radius) + 6px); }
-@media (max-width: 640px) {
-  .cover-hero { aspect-ratio: 4 / 3; }
-}
 
 /* Project galleries split into titled sets (e.g. posts, then brand boards) */
 .set-head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 10px 24px; margin-top: clamp(28px, 4vw, 48px); padding-top: 22px; border-top: 1px solid var(--border); }
