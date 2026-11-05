@@ -584,7 +584,7 @@ ${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span 
     </div>` : ""}
   </section>` : "";
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: (p.fonts || []).some((f) => f.css) ? "family=Source+Sans+3:wght@400;600;700" : "" })}
+  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: (p.fonts || []).some((f) => f.css) ? "family=Source+Sans+3:wght@400;600;700" : "" })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
