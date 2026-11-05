@@ -41,7 +41,8 @@ function loadImages(folder, alt) {
     const ext = path.extname(f);
     const sm = fs.existsSync(path.join(dir, `${base}-sm${ext}`)) ? `${base}-sm${ext}` : f;
     const size = /\.jpe?g$/i.test(f) ? jpegSize(path.join(dir, f)) : { w: 1200, h: 1200 };
-    return { src: `assets/work/${folder}/${f}`, sm: `assets/work/${folder}/${sm}`, ...size, alt: files.length > 1 ? `${alt}, ${i + 1} of ${files.length}` : alt };
+    const xs = fs.existsSync(path.join(dir, `${base}-xs${ext}`)) ? `assets/work/${folder}/${base}-xs${ext}` : null;
+    return { src: `assets/work/${folder}/${f}`, sm: `assets/work/${folder}/${sm}`, xs, ...size, alt: files.length > 1 ? `${alt}, ${i + 1} of ${files.length}` : alt };
   });
 }
 // A project is one gallery from assets/work/<slug>/, or several titled sets (p.sets) shown in order.
@@ -229,7 +230,9 @@ function cover(p, root) {
   };
   const piece = (n, k) => {
     const img = art(n);
-    return `<span class="cv cv-${k}${img.fit ? " fit" : ""}" style="--a:${(img.w / img.h).toFixed(4)}${img.fit ? `;background:${img.fit}` : ""}"><img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></span>`;
+    // Covers are small: the 480 px thumbnail, or the 720 px one on sharp screens.
+    const srcset = img.xs ? ` srcset="${root}${img.xs} 480w, ${root}${img.sm} 720w" sizes="(max-width: 640px) 60vw, 340px"` : "";
+    return `<span class="cv cv-${k}${img.fit ? " fit" : ""}" style="--a:${(img.w / img.h).toFixed(4)}${img.fit ? `;background:${img.fit}` : ""}"><img src="${root}${img.xs || img.sm}"${srcset} alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async"></span>`;
   };
   const lead = art(pick[0]);
   const wide = lead.w / lead.h > 1.2 ? " glimpse-wide" : ""; // landscape leads go across the top
@@ -432,7 +435,7 @@ ${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong> <spa
     <div class="certs" role="group" aria-labelledby="certs-title">
       <h3 class="dash-pill" id="certs-title" data-reveal>Certificates</h3>
       <div class="cert-grid">
-${site.certificates.map((c) => `        <a class="cert" href="assets/img/certificates/${c.img}.jpg" data-lightbox data-reveal><span class="cert-media"><img src="assets/img/certificates/${c.img}-sm.jpg" alt="${esc(`${c.kind}: ${c.title}, ${c.issuer}`)}" loading="lazy" decoding="async"></span><span class="cert-kind">${esc(c.kind)}</span><strong>${esc(c.title)}</strong> <span class="cert-issuer">${esc(c.issuer)}</span></a>`).join("\n")}
+${site.certificates.map((c) => `        <a class="cert" href="assets/img/certificates/${c.img}.jpg" data-lightbox data-reveal><span class="cert-media"><img src="assets/img/certificates/${c.img}-xs.jpg" srcset="assets/img/certificates/${c.img}-xs.jpg 480w, assets/img/certificates/${c.img}-sm.jpg 720w" sizes="(max-width: 820px) 90vw, 300px" alt="${esc(`${c.kind}: ${c.title}, ${c.issuer}`)}" loading="lazy" decoding="async"></span><span class="cert-kind">${esc(c.kind)}</span><strong>${esc(c.title)}</strong> <span class="cert-issuer">${esc(c.issuer)}</span></a>`).join("\n")}
       </div>
     </div>
   </section>
@@ -524,6 +527,7 @@ ${tiles.join("\n")}
 // Mockups above the gallery: the posts on phones in a feed, or display ads in a browser window.
 function mockup(p, root) {
   if (!p.mockup) return "";
+  // Same 720 px files as the gallery below, so the phones reuse those downloads.
   const imgs = p.mockup.pick.map((n) => p.images[n - 1]);
   const im = (img) => `<img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async">`;
   const acts = `<span class="ig-acts" aria-hidden="true">${["M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z", "M4 12a8 8 0 1 1 3.4 6.5L4 20l1-3.6A8 8 0 0 1 4 12Z", "M21 4 3 11l7 2 2 7 9-16Z"].map((d) => `<svg viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`).join("")}</span>`;
@@ -576,7 +580,7 @@ function projectPage(p, i) {
         .map((img) => {
           const eager = seen++ === 0;
           const srcset = img.sm === img.src ? "" : ` srcset="${root}${img.sm} 720w, ${root}${img.src} ${img.w}w" sizes="(max-width: 640px) 100vw, ${Math.round(Math.min(1120, img.w))}px"`;
-          return `<a class="g-item" href="${root}${img.src}" data-lightbox style="--a:${(img.w / img.h).toFixed(4)};background-image:url('${root}${img.sm}')"><img src="${root}${img.sm}"${srcset} alt="${esc(img.alt)}" width="${img.w}" height="${img.h}" loading="${eager ? "eager" : "lazy"}" decoding="async"></a>`;
+          return `<a class="g-item" href="${root}${img.src}" data-lightbox style="--a:${(img.w / img.h).toFixed(4)}"><img src="${root}${img.sm}"${srcset} alt="${esc(img.alt)}" width="${img.w}" height="${img.h}" loading="${eager ? "eager" : "lazy"}" decoding="async"></a>`;
         })
         .join("")}</div>`;
     })
