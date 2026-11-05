@@ -251,14 +251,12 @@ const brandKits = {
   },
   zenfits: {
     palette: [["Forest", "#152C08", "Logo"], ["Sage", "#A3B673", "Leaf accent"], ["Olive", "#515A3E", "Secondary tone"], ["Mist", "#E3E8C0", "Backgrounds"]],
-    type: [751, 335, "#e3e8c0"], typeAlt: "ZenFits logotype",
   },
   "logo-design-service": {
     palette: [["Deep Indigo", "#2D1F5D", "Logo, dark backgrounds"], ["Summit Blue", "#4163AD", "Alternate mark"], ["Lavender", "#BB95EA", "Light backgrounds"], ["Pine", "#155435", "Green variation"], ["Black", "#000000", "Reversed logo"], ["White", "#FFFFFF", "Light logo"]],
   },
   "graphicx-hub": {
     palette: [["Hub Navy", "#1B2A81", "Wordmark"], ["Indigo", "#43428D", "Mark gradient"], ["White", "#FFFFFF", "Backgrounds"]],
-    type: [713, 184, "#ffffff"], typeAlt: "Graphicx Hub logo lockup",
   },
   "bean-bliss": {
     palette: [["Latte", "#D8BE9E", "Packaging and accents"], ["Caramel", "#B3906A", "Accents"], ["Espresso", "#715C4C", "Logo and text"], ["Stone", "#D4D1CB", "Backgrounds"], ["Cream", "#F8F7F6", "Paper"]],
@@ -287,4 +285,39 @@ for (const [slug, k] of Object.entries(brandKits)) {
   if (k.type) p.typeSample = { src: `assets/img/type/${slug}.jpg`, w: k.type[0], h: k.type[1], bg: k.type[2], alt: k.typeAlt };
 }
 
-for (const p of projects) Object.assign(p, writeups[p.slug], { cover: covers[p.slug] });
+// Logo system tiles (assets/img/logos/<file>): a color crop shown as it is, or a "-mask" cut-out recolored with `color`.
+// Wide tiles take two of the three columns.
+const logoSystems = {
+  zenfits: [
+    { label: "Primary logo", file: "zenfits-horizontal", bg: "#E3E8C0", wide: true },
+    { label: "Stacked logo", file: "zenfits-stacked", bg: "#E3E8C0" },
+    { label: "Icon", file: "zenfits-icon", bg: "#E3E8C0" },
+    { label: "Reversed", file: "zenfits-horizontal", mask: true, color: "#E3E8C0", bg: "#152C08", wide: true },
+    { label: "Stacked on forest", file: "zenfits-stacked", mask: true, color: "#A3B673", bg: "#152C08" },
+    { label: "Icon on sage", file: "zenfits-icon", mask: true, color: "#152C08", bg: "#A3B673" },
+    { label: "Icon on black", file: "zenfits-icon", mask: true, color: "#E3E8C0", bg: "#000000" },
+  ],
+  "graphicx-hub": [
+    { label: "Primary logo", file: "graphicx-hub-horizontal", bg: "#FFFFFF", wide: true },
+    { label: "Stacked logo", file: "graphicx-hub-stacked", bg: "#FFFFFF" },
+    { label: "Icon", file: "graphicx-hub-icon", bg: "#FFFFFF" },
+    { label: "Reversed", file: "graphicx-hub-horizontal", mask: true, color: "#FFFFFF", bg: "#1B2A81", wide: true },
+    { label: "Stacked reversed", file: "graphicx-hub-stacked", mask: true, color: "#FFFFFF", bg: "#43428D" },
+    { label: "Icon on navy", file: "graphicx-hub-icon", mask: true, color: "#FFFFFF", bg: "#1B2A81" },
+    { label: "Icon on black", file: "graphicx-hub-icon", mask: true, color: "#FFFFFF", bg: "#000000" },
+  ],
+};
+
+// Mockups shown above the gallery: phones with posts in the feed, or a browser window for display ads.
+// pick: image numbers (1 = first image, counting across sets).
+const mockups = {
+  "e-rising-trainers": { kind: "phones", pick: [1, 6, 3] },
+  "simple-logics": { kind: "phones", pick: [2, 1, 4] },
+  "orbit-bite": { kind: "phones", pick: [2, 1, 5] },
+  valtora: { kind: "phones", pick: [2, 1, 6] },
+  "tyr-skincare": { kind: "phones", pick: [2, 1, 3] },
+  "torpedo-line-consulting": { kind: "phones", pick: [1] },
+  "google-ads-display": { kind: "browser", pick: [3] },
+};
+
+for (const p of projects) Object.assign(p, writeups[p.slug], { cover: covers[p.slug], logoSystem: logoSystems[p.slug], mockup: mockups[p.slug] });

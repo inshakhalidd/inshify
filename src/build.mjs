@@ -473,6 +473,66 @@ function galleryRows(images) {
   return rows.concat(out);
 }
 
+// PNG width and height from the IHDR chunk.
+function pngSize(file) {
+  const b = fs.readFileSync(file);
+  return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+}
+// Light or dark caption text for a tile background.
+const onColor = (hex) => {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 150 ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.75)";
+};
+
+// Logo system: the logo cut into primary, stacked and icon versions, in color and one-color on brand backgrounds.
+function logoSystem(p, root) {
+  if (!p.logoSystem) return "";
+  const tiles = p.logoSystem.map((t) => {
+    const base = `assets/img/logos/${t.file}`;
+    const alt = `${p.title} ${t.label.toLowerCase()}`;
+    let art;
+    if (t.mask) {
+      const { w, h } = pngSize(path.join(ROOT, `${base}-mask.png`));
+      art = `<span class="logo-mask" role="img" aria-label="${esc(alt)}" style="-webkit-mask-image:url('${root}${base}-mask.png');mask-image:url('${root}${base}-mask.png');--a:${(w / h).toFixed(4)};background:${t.color}"></span>`;
+    } else {
+      const { w, h } = jpegSize(path.join(ROOT, `${base}.jpg`));
+      art = `<img src="${root}${base}.jpg" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async">`;
+    }
+    return `      <figure class="logo-tile${t.wide ? " wide" : ""}" style="background:${t.bg};color:${onColor(t.bg)}" data-reveal>${art}<figcaption>${esc(t.label)}</figcaption></figure>`;
+  });
+  return `
+  <section class="wrap logo-system" aria-labelledby="logo-system-title">
+    <div class="section-head" data-reveal>
+      <div>
+        <p class="eyebrow">Logo system</p>
+        <h2 id="logo-system-title">One mark, <span class="light">every format</span></h2>
+      </div>
+    </div>
+    <div class="logo-grid">
+${tiles.join("\n")}
+    </div>
+  </section>`;
+}
+
+// Mockups above the gallery: the posts on phones in a feed, or display ads in a browser window.
+function mockup(p, root) {
+  if (!p.mockup) return "";
+  const imgs = p.mockup.pick.map((n) => p.images[n - 1]);
+  const im = (img) => `<img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async">`;
+  const acts = `<span class="ig-acts" aria-hidden="true">${["M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z", "M4 12a8 8 0 1 1 3.4 6.5L4 20l1-3.6A8 8 0 0 1 4 12Z", "M21 4 3 11l7 2 2 7 9-16Z"].map((d) => `<svg viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`).join("")}</span>`;
+  const post = (img) => `<span class="ig-bar" aria-hidden="true"><span class="ig-av"></span><span class="ig-name">${esc(p.title.replace(/^.*: /, ""))}</span><span class="ig-more">···</span></span>${im(img)}${acts}<span class="ig-lines" aria-hidden="true"><i></i><i></i></span>`;
+  // Each phone scrolls like a feed: its post, then the start of the next one (another image from the project).
+  const nextOf = (img) => p.images[(p.images.indexOf(img) + 1) % p.images.length];
+  const inner = p.mockup.kind === "browser"
+    ? `<div class="browser"><span class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><b></b></span>${im(imgs[0])}</div>`
+    : imgs.map((img) => `<div class="phone"><div class="screen">${post(img)}${p.images.length > 1 ? post(nextOf(img)) : ""}</div></div>`).join("");
+  const { bg } = p.cover;
+  return `
+  <section class="wrap mockups" aria-label="${esc(p.title)} ${p.mockup.kind === "browser" ? "in a browser" : "in the feed"}">
+    <div class="mockup-stage ${p.mockup.kind}" style="--c1:${bg[0]};--c2:${bg[1]}" data-reveal>${inner}</div>
+  </section>`;
+}
+
 // ---------- Project page ----------
 function projectPage(p, i) {
   const root = "../";
@@ -544,6 +604,8 @@ ${header(v2root, false)}
     ${p.idea ? `<div class="note" data-reveal><h2 class="dash-pill">The idea</h2><p>${esc(p.idea)}</p></div>` : ""}
   </section>
 ${brandSystem}
+${logoSystem(p, root)}
+${mockup(p, root)}
   <section class="wrap gallery" aria-label="Project images">
     ${gallery}
   </section>
