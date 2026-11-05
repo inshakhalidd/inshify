@@ -67,6 +67,15 @@ const icon = {
   pin: `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
 };
 
+// Line icons for the service cards.
+const svcIcon = (d) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const svc = {
+  logo: svcIcon("M12 3l6 6-4.5 9h-3L6 9l6-6Zm0 0v7m0 0a1.6 1.6 0 1 0 0 .1M9 21h6"),
+  brand: svcIcon("M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.3-1.7-.4-1.1.3-2.3 1.5-2.3H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10ZM7.5 11.5h.01M10 7.5h.01M14.5 7.5h.01M17 11h.01"),
+  social: svcIcon("M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm5 5.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM17.5 6.5h.01"),
+  print: svcIcon("M12 3 3 7.5l9 4.5 9-4.5L12 3ZM3 12l9 4.5 9-4.5M3 16.5 12 21l9-4.5"),
+};
+
 // Software tiles: simple app-style badges in each tool's colors (drawn here, not official artwork).
 const TOOLS = {
   Photoshop: { abbr: "Ps", cls: "t-ps" },
@@ -126,7 +135,7 @@ ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap">${extraFonts ? `
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Kaushan+Script&display=swap">${extraFonts ? `
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${extraFonts}&display=swap">` : ""}
 <link rel="stylesheet" href="${root}assets/css/styles.css?v=${assetVersion("assets/css/styles.css")}">
 <script src="${root}assets/js/main.js?v=${assetVersion("assets/js/main.js")}" defer></script>
@@ -187,12 +196,20 @@ ${voiceflow}
 `;
 }
 
-const ctaBand = (contactHref) => `<section class="wrap section-tight" aria-labelledby="cta-title">
-  <div class="cta-band" data-reveal>
-    ${doodle("doodle-cta")}
-    <h2 id="cta-title">Already have an idea and <span class="light">want it designed?</span></h2>
-    <a class="btn btn-dark" href="${contactHref}">Hire me ${icon.arrow}</a>
+// A looping ticker: the words are written twice so the track can slide by half its width forever.
+const ticker = (words, sep, cls) => {
+  const run = words.map((w) => `<span>${w}</span><span class="sep">${sep}</span>`).join("");
+  return `<div class="ticker ${cls}" aria-hidden="true"><div class="ticker-track">${run}${run}</div></div>`;
+};
+
+// Closing band on every page: big headline, one line, the CTA, then a cream ticker.
+const endBand = (contactHref) => `<section class="end-band" aria-labelledby="end-title">
+  <div class="end-inner" data-reveal>
+    <h2 id="end-title">Great things <span class="end-line">begin <em class="script">together.</em></span></h2>
+    <p>Let’s make something meaningful happen.</p>
+    <a class="btn btn-cream" href="${contactHref}">Hire me ${icon.arrow}</a>
   </div>
+  ${ticker(["Let’s Create", "Let’s Collaborate", "Let’s Talk", "Let’s Connect"], "•", "ticker-cream")}
 </section>`;
 
 // Badge color per project type, so paid, internship, concept, service and sample work read differently.
@@ -205,14 +222,23 @@ function badgeKind(p) {
 }
 const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
 
-// Mockup cover built from a project's own artwork (p.cover in the config):
+// Covers built from a project's own artwork (p.cover in the config).
+// By default a clean poster: the hero piece upright on the brand gradient (cards, featured rows, project heroes).
+// With mockup = true, a scene shown under the project cover:
 // phone = first pick on a phone screen with the rest fanned behind; stack = cascading boards;
-// screen = first pick in a browser window with the rest floating; tiles = fanned squares; frame = one tilted card.
-function cover(p, root, cls = "") {
+// screen = first pick in a browser window with the rest floating; tiles = fanned squares.
+const hasScene = (p) => p.cover.kind !== "frame";
+function cover(p, root, cls = "", mockup = false) {
   const c = p.cover;
   const pick = c.pick.map((n) => p.images[n - 1]);
-  const im = (img) => `<img src="${root}${img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async">`;
+  const big = cls.includes("cover-hero");
+  const im = (img) => `<img src="${root}${big ? img.src : img.sm}" alt="" width="${img.w}" height="${img.h}" loading="lazy" decoding="async">`;
   const piece = (img, k) => `<span class="cv cv-${k}" style="--a:${(img.w / img.h).toFixed(4)}">${im(img)}</span>`;
+  const style = `--c1:${c.bg[0]};--c2:${c.bg[1]}`;
+  if (!mockup) {
+    const hero = c.kind === "stack" ? pick[pick.length - 1] : c.kind === "tiles" ? pick[Math.floor(pick.length / 2)] : pick[0];
+    return `<span class="cover cover-poster${cls ? ` ${cls}` : ""}" style="${style}" aria-hidden="true">${piece(hero, "hero")}</span>`;
+  }
   const [main, ...rest] = pick;
   let inner;
   if (c.kind === "phone") {
@@ -226,7 +252,7 @@ function cover(p, root, cls = "") {
     inner = piece(main, "frame");
   }
   const solo = c.kind === "phone" && !rest.length ? " solo" : "";
-  return `<span class="cover cover-${c.kind}${solo}${cls ? ` ${cls}` : ""}" style="--c1:${c.bg[0]};--c2:${c.bg[1]}" aria-hidden="true">${inner}</span>`;
+  return `<span class="cover cover-${c.kind}${solo}${cls ? ` ${cls}` : ""}" style="${style}" aria-hidden="true">${inner}</span>`;
 }
 
 function card(p, root, v2root, i) {
@@ -290,7 +316,7 @@ ${header(v2root, true)}
         <div class="hero-copy">
           <h1 id="hero-title"><span class="line"><span>Graphic</span></span> <span class="line light"><span>Designer</span></span></h1>
           <p class="paren hero-paren">(Brand identity · Social media design · Logos)</p>
-          <p class="lede">Logos, posts and identities that make your brand impossible to ignore.</p>
+          <p class="lede">Logos, posts and identities that make your brand <mark class="hl">impossible to ignore.</mark></p>
           <div class="actions">
             <a class="btn btn-primary" href="#contact">Hire me ${icon.arrow}</a>
             <a class="btn btn-ghost" href="#work">See my work</a>
@@ -299,6 +325,8 @@ ${header(v2root, true)}
       </div>
     </div>
   </section>
+
+  ${ticker(["Logo design", "Brand identity", "Social media design", "Carousels", "Display ads", "Stationery"], "✦", "ticker-tilt")}
 
   <section class="wrap section" id="featured" aria-labelledby="featured-title">
     <div class="section-head" data-reveal>
@@ -352,13 +380,17 @@ ${projects.map((p, i) => card(p, root, v2root, i)).join("\n")}
     <div class="section-head" data-reveal>
       <div>
         <p class="eyebrow">Services</p>
-        <h2 id="services-title">I bring brands <span class="light">to life</span></h2>
+        <h2 id="services-title">What I can <span class="light">help you with</span></h2>
       </div>
+      <p class="section-note services-note">From a first logo sketch to the last post in a campaign, I keep every piece clear, consistent and on-brand.</p>
     </div>
     <div class="grid services">
-      <article class="service" data-reveal><span class="dash-pill">01 · Logo design</span><h3>A distinctive mark <span class="light">that works everywhere.</span></h3></article>
-      <article class="service" data-reveal><span class="dash-pill">02 · Brand identity</span><h3>Color, type and a look <span class="light">that is yours.</span></h3></article>
-      <article class="service" data-reveal><span class="dash-pill">03 · Social media design</span><h3>Scroll-stopping posts <span class="light">that stay on-brand.</span></h3></article>
+${[
+  ["s-yellow", svc.logo, "Logo design", "A distinctive mark that works everywhere, from a profile picture to a shop sign."],
+  ["s-blue", svc.brand, "Brand identity", "Color, type, patterns and guidelines that make your brand easy to spot."],
+  ["s-sky", svc.social, "Social media design", "Posts and carousels that stop the scroll and stay on-brand."],
+  ["s-ink", svc.print, "Ads & print", "Display ads, stationery and book covers with a clear point of view."],
+].map(([cls, ic, title, text]) => `      <article class="service ${cls}" data-reveal><span class="service-ic">${ic}</span><div><h3>${title}</h3><p>${text}</p></div></article>`).join("\n")}
     </div>
   </section>
 
@@ -423,8 +455,6 @@ ${site.certificates.map((c) => `        <a class="cert" href="assets/img/certifi
     </div>
   </section>
 
-${ctaBand("#contact")}
-
   <section class="wrap section-tight" id="contact" aria-labelledby="contact-title">
     <div class="section-head" data-reveal>
       <div>
@@ -439,6 +469,7 @@ ${ctaBand("#contact")}
     </div>
   </section>
 </main>
+${endBand("#contact")}
 ${lightbox}
 ${footer(root, v2root)}`;
 }
@@ -533,6 +564,8 @@ ${header(v2root, false)}
   </header>
 
   <div class="wrap case-cover" data-reveal>${cover(p, root, "cover-hero")}</div>
+${hasScene(p) ? `  <div class="wrap case-scene" data-reveal>${cover(p, root, "cover-hero cover-scene", true)}</div>
+` : ""}
 
   <section class="wrap case-notes" aria-label="About this project">
     <div class="note" data-reveal><h2 class="dash-pill">The brief</h2><p>${esc(p.brief)}</p></div>
@@ -554,7 +587,7 @@ ${brandSystem}
     </a>
   </nav>
 </main>
-${ctaBand(`${v2root}index.html#contact`)}
+${endBand(`${v2root}index.html#contact`)}
 ${lightbox}
 ${footer(root, v2root)}`;
 }

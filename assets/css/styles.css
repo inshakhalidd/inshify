@@ -265,14 +265,6 @@ h2 { font-size: clamp(36px, 5.4vw, 64px); }
 .info-col .contact-list li { color: var(--text); }
 .info-col .contact-list .i { color: var(--soft); }
 
-/* CTA band */
-.cta-band {
-  position: relative; overflow: hidden; isolation: isolate; display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap;
-  padding: clamp(40px, 6vw, 72px) clamp(24px, 5vw, 60px); background: var(--accent); color: #fff; border-radius: calc(var(--radius) + 6px);
-}
-.cta-band h2 { font-size: clamp(30px, 4.2vw, 48px); max-width: 14em; color: #f6f8fb; }
-.cta-band .light { color: #d6e2f5; }
-.doodle-cta { inset: -10% -5%; width: 110%; height: 120%; color: rgba(255, 255, 255, 0.18); z-index: -1; }
 
 /* Contact tiles */
 .tile {
@@ -540,6 +532,13 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
 /* One framed piece */
 .cv-frame { height: 72cqh; max-width: 92cqw; aspect-ratio: var(--a); border-radius: 2cqh; --r: -4deg; }
 
+/* Poster cover: the hero piece upright on the brand gradient */
+.cv-hero { width: min(84cqw, calc(76cqh * var(--a))); height: auto; aspect-ratio: var(--a); border-radius: 1.6cqh; }
+
+/* Mockup scene under a project's cover: a soft studio backdrop tinted with the brand color */
+.cover-scene { background: radial-gradient(70% 90% at 50% 35%, color-mix(in srgb, var(--c1) 30%, #f4f1ea), color-mix(in srgb, var(--c2) 18%, #d8d3c9)); }
+.case-scene { margin-top: 16px; }
+
 /* Hover: pieces lift and fan a little wider */
 .card:hover .cv, .feat-row:hover .cv, .next-project:hover .cv { --fan: 1.45; --dy: -2cqh; }
 .card:hover .cv-phone, .feat-row:hover .cv-phone, .next-project:hover .cv-phone { --dy: -4cqh; }
@@ -602,6 +601,61 @@ a.tile-accent:hover { background: var(--accent-hover); border-color: var(--accen
   .type-grid { grid-template-columns: 1fr; }
   .set-head { grid-template-columns: 1fr; }
   .set-count { grid-row: auto; grid-column: 1; }
+}
+
+/* Highlighted words, like a marker pen */
+mark.hl { padding: 0.04em 0.32em; border-radius: 0.3em; background: var(--accent); color: #fff; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+
+/* Tickers: a track of words written twice, sliding by half its width */
+.ticker { overflow: hidden; white-space: nowrap; }
+.ticker-track { display: flex; align-items: center; width: max-content; animation: ticker 38s linear infinite; }
+.ticker-track span { flex: none; }
+.ticker .sep { padding-inline: clamp(18px, 3vw, 40px); }
+@keyframes ticker { to { transform: translateX(-50%); } }
+/* Tilted black band under the hero */
+.ticker-tilt {
+  position: relative; z-index: 2; width: 106%; margin: clamp(8px, 2vw, 24px) 0 0 -3%; padding-block: clamp(12px, 1.6vw, 18px);
+  rotate: -2deg; background: #111; color: #f3efe6; font-size: clamp(16px, 1.8vw, 22px); font-weight: 700; letter-spacing: -0.01em;
+}
+.ticker-tilt .sep { color: #f5d35e; }
+[data-theme="dark"] .ticker-tilt { background: #f3efe6; color: #111; }
+[data-theme="dark"] .ticker-tilt .sep { color: #3a5b86; }
+.ticker-tilt .ticker-track { animation-duration: 46s; }
+main { overflow-x: clip; }
+
+/* Colorful service cards */
+.grid.services { grid-template-columns: repeat(4, 1fr); }
+.services-note { max-width: 30em; font-size: 15px; line-height: 1.6; }
+.service { gap: 40px; min-height: 250px; border: 0; }
+.service-ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid currentColor; }
+.service-ic svg { width: 22px; height: 22px; }
+.service h3 { font-size: clamp(21px, 1.9vw, 25px); margin-bottom: 8px; }
+.service p { font-size: 14.5px; line-height: 1.55; opacity: 0.85; }
+.s-yellow { background: #f5d35e; color: #1a1712; }
+.s-blue { background: #3a5b86; color: #fff8e8; }
+.s-sky { background: #8fb2e6; color: #10192b; }
+.s-ink { background: #111; color: #f3efe6; box-shadow: inset 0 0 0 1px var(--border); }
+.service:hover { transform: translateY(-6px) rotate(-1deg); }
+
+/* Closing band: big headline with a script word, then a cream ticker */
+.end-band { margin-top: clamp(56px, 8vw, 110px); background: #3a5b86; color: #fff8e8; }
+.end-inner { display: grid; justify-items: center; gap: 18px; padding: clamp(72px, 11vw, 140px) 20px clamp(64px, 9vw, 110px); text-align: center; }
+.end-inner h2 { font-size: clamp(54px, 9vw, 128px); font-weight: 800; letter-spacing: -0.065em; line-height: 0.92; color: #fff8e8; }
+.end-line { display: block; }
+.script { font-family: "Kaushan Script", cursive; font-style: normal; font-weight: 400; letter-spacing: 0; padding-left: 0.12em; }
+.end-inner p { font-size: clamp(16px, 1.5vw, 19px); font-weight: 500; }
+.btn-cream { margin-top: 10px; background: #fff8e8; color: #3a5b86; }
+.btn-cream:hover { background: #fff; }
+.ticker-cream { padding-block: clamp(14px, 2vw, 24px); background: #fff8e8; color: #3a5b86; font-size: clamp(24px, 3.4vw, 44px); font-weight: 700; letter-spacing: -0.02em; }
+.ticker-cream .sep { font-size: 0.6em; }
+.end-band + .lightbox + .site-footer, .end-band + .site-footer { margin-top: 0; }
+
+@media (max-width: 1000px) {
+  .grid.services { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .grid.services { grid-template-columns: 1fr; }
+  .service { min-height: 0; }
 }
 
 /* Voiceflow chat: keep its own light colors (the site's dark color-scheme made the message box grey) */
