@@ -78,15 +78,37 @@ export const projects = [
     ],
   },
   {
-    slug: "brewkie", scope: "Brand identity · Guidelines",
+    slug: "brewkie", scope: "Brand identity · Guidelines · Mockups",
     title: "Brewkie",
     label: "Brand identity",
     tags: ["brand"],
     brief: "Brand identity and guidelines for a coffee brand, from a concept brief.",
     alt: "Brewkie brand guidelines page",
+    sets: [
+      {
+        title: "Brand in use", dir: "brewkie-mockups", alt: "Brewkie brand mockup",
+        note: "The cup-and-cookie mark on kraft bags, takeaway cups, a mug, a round café sign, business cards, envelopes, and an app icon, so the brand holds together from the shop front to the phone screen.",
+      },
+      { title: "Brand guidelines", dir: "brewkie", alt: "Brewkie brand guidelines page" },
+    ],
   },
   {
-    slug: "orbit-bite", scope: "Logo · Stationery · Social media posts",
+    slug: "deep-summit", scope: "Logo system · Color · Typography · Mockups",
+    title: "Deep Summit",
+    label: "Brand identity",
+    tags: ["brand", "logos"],
+    brief: "Three brand identity directions for Deep Summit, each with a logo system, color palette, typography and mockups. Concept work, not used by any client.",
+    idea: "One name, three moods. Violet stacks a layered peak beside a bold Space Grotesk wordmark; green pairs a twin-mountain icon with friendly lowercase Inter Tight; midnight blue folds the mountain into the word itself, so the peaks replace the double m in summit. Each direction is tested as an app icon, on a phone and on a business card.",
+    alt: "Deep Summit brand identity",
+    sets: [
+      { title: "Violet direction", dir: "deep-summit-violet", alt: "Deep Summit violet brand direction", note: "Lavender to deep indigo, with a layered peak icon and Space Grotesk headlines." },
+      { title: "Green direction", dir: "deep-summit-green", alt: "Deep Summit green brand direction", note: "Forest green and fresh lime, with a twin-mountain icon and Inter Tight." },
+      { title: "Midnight blue direction", dir: "deep-summit-blue", alt: "Deep Summit midnight blue brand direction", note: "Navy, royal blue and silver, with the mountain built into the wordmark." },
+      { title: "Logo variants", dir: "logo-design-service", alt: "Deep Summit logo variant on light and dark", note: "Each icon on light, dark, white and black, so the three directions can be compared side by side." },
+    ],
+  },
+  {
+    slug: "orbit-bite", scope: "Logo · Stationery · Mockups · Social media posts",
     title: "Orbit Bite",
     label: "Brand identity",
     tags: ["brand"],
@@ -97,7 +119,7 @@ export const projects = [
         title: "Social media posts", dir: "orbit-bite-posts", alt: "Orbit Bite social media post",
         note: "A launch set that carries the space theme into the feed: a menu of planets, a mood quiz, box sizes called Small Mission and Full Galaxy, and a boarding pass that invites followers to tag their co-pilot.",
       },
-      { title: "Logo & stationery", dir: "orbit-bite", alt: "Orbit Bite logo and stationery" },
+      { title: "Logo, stationery & mockups", dir: "orbit-bite", alt: "Orbit Bite logo and stationery", note: "The doughnut-planet mark on a shop sign, letterhead, envelopes, business cards and a takeaway bag." },
     ],
     // Brand system shown on the project page.
     palette: [
@@ -127,14 +149,6 @@ export const projects = [
     alt: "ZenFits logo variations and color palette",
   },
   {
-    slug: "logo-design-service", scope: "Logo concepts",
-    title: "Logo Design Service: Concept Options",
-    label: "Logo design",
-    tags: ["logos"],
-    brief: "Three logo directions presented as options. Concept work, not used by any client.",
-    alt: "Deep Summit logo concept option",
-  },
-  {
     slug: "graphicx-hub", scope: "Logo",
     title: "Graphicx Hub",
     label: "Logo design",
@@ -143,11 +157,11 @@ export const projects = [
     alt: "Graphicx Hub logo, stacked and horizontal",
   },
   {
-    slug: "bean-bliss", scope: "Logo · Stationery",
+    slug: "bean-bliss", scope: "Logo · Stationery · Mockups",
     title: "Bean Bliss",
     label: "Logo design",
     tags: ["logos"],
-    brief: 'Logo of a "B" joined with a coffee bean, with stationery mockups.',
+    brief: 'Logo of a "B" joined with a coffee bean, shown on stationery, takeaway cups and envelopes.',
     alt: "Bean Bliss logo on stationery mockups",
   },
   {
@@ -188,9 +202,6 @@ const writeups = {
   zenfits: {
     idea: "Calm rather than loud: a refined serif wordmark with a small leaf accent and a soft sage palette position ZenFits as mindful fitness. The set includes horizontal, stacked and monogram versions, so the logo fits any space.",
   },
-  "logo-design-service": {
-    idea: "Three directions for one name, each built on a mountain peak: a layered purple triangle, a green twin-peak mark and a minimal blue line icon. Every option is shown on light and dark backgrounds, so a client can compare them side by side.",
-  },
   "graphicx-hub": {
     idea: "A bold \"G\" made of two overlapping curves suggests creatives coming together in one place. Deep indigo and a pixel-style detail in \"HUB\" nod to digital design, with stacked and horizontal versions for every use.",
   },
@@ -224,9 +235,9 @@ const covers = {
   "torpedo-line-consulting": { bg: ["#3c63b8", "#0e1730"], pick: [1] },
   brewkie: { bg: ["#a86d3e", "#2f1a0d"], pick: [1, 2, 3] },
   "google-ads-display": { bg: ["#4a5078", "#10121c"], pick: [3, 1, 2] },
-  "logo-design-service": { bg: ["#b48ee6", "#24173f"], pick: [1, 2, 3] },
+  "deep-summit": { bg: ["#8f6fd6", "#141a3d"], pick: [2, 8, 14] },
   "graphicx-hub": { bg: ["#4f6cf0", "#0f1850"], pick: ["graphicx-hub-horizontal", "graphicx-hub-stacked", "graphicx-hub-icon"] },
-  "bean-bliss": { bg: ["#efe6da", "#a8957d"], pick: [1] },
+  "bean-bliss": { bg: ["#efe6da", "#a8957d"], pick: [1, 2, 4] },
   zenfits: { bg: ["#c8d39e", "#262b1c"], pick: ["zenfits-horizontal", "zenfits-stacked", "zenfits-icon"] },
 };
 
@@ -257,8 +268,9 @@ const brandKits = {
   zenfits: {
     palette: [["Forest", "#152C08", "Logo"], ["Sage", "#A3B673", "Leaf accent"], ["Olive", "#515A3E", "Secondary tone"], ["Mist", "#E3E8C0", "Backgrounds"]],
   },
-  "logo-design-service": {
-    palette: [["Deep Indigo", "#2D1F5D", "Logo, dark backgrounds"], ["Summit Blue", "#4163AD", "Alternate mark"], ["Lavender", "#BB95EA", "Light backgrounds"], ["Pine", "#155435", "Green variation"], ["Black", "#000000", "Reversed logo"], ["White", "#FFFFFF", "Light logo"]],
+  "deep-summit": {
+    palette: [["Lavender", "#BB95EA", "Violet direction"], ["Amethyst", "#904AC6", "Violet direction"], ["Lime", "#8BC53F", "Green direction"], ["Pine", "#145333", "Green direction"], ["Royal Blue", "#4162AD", "Blue direction"], ["Midnight", "#1A2051", "Blue direction"]],
+    note: "Two signature colors from each of the three directions.",
   },
   "graphicx-hub": {
     palette: [["Hub Navy", "#1B2A81", "Wordmark"], ["Indigo", "#43428D", "Mark gradient"], ["White", "#FFFFFF", "Backgrounds"]],

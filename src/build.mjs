@@ -729,7 +729,7 @@ ${footer(root, root)}`;
 fs.writeFileSync(path.join(OUT, "404.html"), notFound());
 fs.writeFileSync(path.join(OUT, "certificates.html"), certificatesPage());
 // Old project URLs that now live inside another project keep working by forwarding there.
-const moved = { "brand-overview-boards": "simple-logics.html#brand-overview-boards" };
+const moved = { "brand-overview-boards": "simple-logics.html#brand-overview-boards", "logo-design-service": "deep-summit.html" };
 for (const [from, to] of Object.entries(moved)) {
   fs.writeFileSync(path.join(OUT, "work", `${from}.html`), `<!doctype html>
 <html lang="en">
