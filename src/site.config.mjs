@@ -177,7 +177,7 @@ const writeups = {
     idea: "One red-and-white system runs through every post, so the whole campaign reads as one brand in the feed. Course titles lead in bold type, dates and seats sit in clear blocks, and every poster ends with a single call to action.",
   },
   "simple-logics": {
-    idea: "Deep navy backgrounds and electric-blue type give a tech company a confident, premium feel. Each post makes one point, from idea to launch or faster results with AI, and backs it with a clean diagram or 3D visual that reads at a glance.",
+    idea: "Deep navy backgrounds and electric-blue type give a tech company a confident, premium feel. Each post makes one point, from idea to launch, bug fixing or faster results with AI, and backs it with a clean diagram or 3D visual that reads at a glance. A festive Eid Mubarak post carries the same navy-and-blue look into seasonal content.",
   },
   brewkie: {
     idea: "A warm coffee-brown palette and a playful cup-and-cookie mark give Brewkie a cozy, friendly personality. The guidelines cover the logo, color palette, patterns, stationery and mockups, so the brand stays consistent wherever it appears.",
