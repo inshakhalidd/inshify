@@ -294,7 +294,7 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
   const counts = Object.fromEntries(filters.map((f) => [f.key, f.key === "all" ? projects.length : projects.filter((p) => p.tags.includes(f.key)).length]));
   const featured = site.featured.map((s) => bySlug[s]);
 
-  return `${head({ title: `${site.name} — ${site.fullName}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by ${site.fullName}. Graphic design from Inshify Studio${isPlaceholder(site.city) ? "" : `, ${site.city}`}.`, root, pagePath: "", intro: true, jsonLd: homeLd() })}
+  return `${head({ title: `${site.fullName} — Graphic Designer | ${site.name}`, description: site.description, ogDescription: `Logos, social media posts and brand identities by ${site.fullName}. Graphic design from Inshify Studio${isPlaceholder(site.city) ? "" : `, ${site.city}`}.`, root, pagePath: "", intro: true, jsonLd: homeLd() })}
 <body id="top">
 <div class="intro-screen" aria-hidden="true"><span class="intro-mark"></span><span class="intro-sub">Graphic design studio</span><span class="intro-bar"></span></div>
 ${header(v2root, true)}
@@ -624,7 +624,7 @@ ${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span 
     </div>` : ""}
   </section>` : "";
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, ogImageAlt: p.alt || `${p.title}: ${p.scope}`, ogType: "article", pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
+  return `${head({ title: `${p.title.replace(/^.*?Service:s*/, "")} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, ogImageAlt: p.alt || `${p.title}: ${p.scope}`, ogType: "article", pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
@@ -696,7 +696,7 @@ function homeLd() {
 // Certificates live on their own page (opened in a new tab from About) so the home page stays clean.
 function certificatesPage() {
   const root = "";
-  return `${head({ title: `Certificates — ${site.fullName}, Graphic Designer | ${site.name}`, description: `Certificates and awards earned by ${site.fullName}: ${site.certificates.map((c) => c.title).join(", ")}.`, root, pagePath: "certificates.html" })}
+  return `${head({ title: `Certificates — ${site.fullName} | ${site.name}`, description: `Certificates and awards earned by ${site.fullName}: ${site.certificates.map((c) => c.title).join(", ")}.`, root, pagePath: "certificates.html" })}
 <body>
 ${header(root, false)}
 <main id="main" class="wrap section certs-page">
