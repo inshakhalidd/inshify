@@ -624,7 +624,7 @@ ${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span 
     </div>` : ""}
   </section>` : "";
 
-  return `${head({ title: `${p.title.replace(/^.*?Service:s*/, "")} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, ogImageAlt: p.alt || `${p.title}: ${p.scope}`, ogType: "article", pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
+  return `${head({ title: `${p.title.replace(/^.*?Service: */, "")} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, ogImageAlt: p.alt || `${p.title}: ${p.scope}`, ogType: "article", pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
