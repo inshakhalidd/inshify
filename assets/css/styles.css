@@ -703,3 +703,10 @@ main { overflow-x: clip; }
   .intro .intro-screen { display: none; }
   .hero h1 .line > span { transform: none; }
 }
+
+/* Certificates: a slim strip on the home page, the full grid on certificates.html */
+.cert-strip { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: clamp(32px, 4vw, 48px); padding: 22px 26px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+.cert-strip .dash-pill { display: inline-flex; }
+.cert-strip p { margin-top: 12px; color: var(--muted); font-size: 15px; }
+.certs-page .cert-grid { margin-top: clamp(28px, 4vw, 44px); }
+.certs-page .actions { margin-top: clamp(28px, 4vw, 44px); }

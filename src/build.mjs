@@ -98,7 +98,9 @@ const lightbox = `<dialog class="lightbox" aria-label="Image viewer">
 // A loose hand-drawn loop, echoing the doodle lines in the reference portfolios.
 const doodle = (cls) => `<svg class="doodle ${cls}" viewBox="0 0 1200 500" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 360 C 140 120, 300 80, 380 220 S 300 440, 220 330 S 420 60, 640 170 S 880 420, 960 260 S 900 40, 1040 110 S 1180 300, 1230 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 
-function head({ title, description, ogDescription = description, root, ogImage, pagePath, intro = false, extraFonts = "" }) {
+const OG_DEFAULT = { src: "assets/img/og-image.jpg", w: 1200, h: 630, alt: "Inshify Studio: logos, posts and brands by Insha Khalid, Graphic Designer" };
+function head({ title, description, ogDescription = description, root, ogImage = OG_DEFAULT.src, ogImageAlt = OG_DEFAULT.alt, ogSize = ogImage === OG_DEFAULT.src ? [OG_DEFAULT.w, OG_DEFAULT.h] : null, ogType = "website", pagePath, intro = false, extraFonts = "", noindex = false, jsonLd = null }) {
+  const abs = (p) => (site.url ? `${site.url}/${p}` : root + p);
   return `<!doctype html>
 <html lang="en" data-theme="dark" data-theme-key="inshify-theme">
 <head>
@@ -106,15 +108,26 @@ function head({ title, description, ogDescription = description, root, ogImage, 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<meta property="og:type" content="website">
+<meta name="author" content="${esc(site.fullName)}">
+<meta name="robots" content="${noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}">
+<meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${esc(site.name)}">
+<meta property="og:locale" content="en_US">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(ogDescription)}">
-<meta property="og:image" content="${esc(site.url ? `${site.url}/${ogImage}` : root + ogImage)}">
+<meta property="og:image" content="${esc(abs(ogImage))}">
+<meta property="og:image:alt" content="${esc(ogImageAlt)}">${ogSize ? `
+<meta property="og:image:width" content="${ogSize[0]}">
+<meta property="og:image:height" content="${ogSize[1]}">` : ""}
 ${site.url ? `<link rel="canonical" href="${esc(`${site.url}/${pagePath}`)}">` : ""}
 ${site.url ? `<meta property="og:url" content="${esc(`${site.url}/${pagePath}`)}">` : ""}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#141414">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(ogDescription)}">
+<meta name="twitter:image" content="${esc(abs(ogImage))}">
+<meta name="twitter:image:alt" content="${esc(ogImageAlt)}">
+<meta name="theme-color" content="#141414">${jsonLd ? `
+<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>` : ""}
 <link rel="icon" type="image/png" sizes="32x32" href="${root}assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="${root}assets/img/favicon-48.png">
 <link rel="icon" type="image/png" sizes="192x192" href="${root}assets/img/icon-192.png">
@@ -281,7 +294,7 @@ ${site.software.map((name) => `      <li>${TOOLS[name] ? toolTile(name, "sm") : 
   const counts = Object.fromEntries(filters.map((f) => [f.key, f.key === "all" ? projects.length : projects.filter((p) => p.tags.includes(f.key)).length]));
   const featured = site.featured.map((s) => bySlug[s]);
 
-  return `${head({ title: `${site.name} — ${site.owner}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by Insha. ${projects.length} projects from Inshify Studio, ${isPlaceholder(site.city) ? "" : `${site.city}-based `}graphic design.`, root, ogImage: site.brandCard, pagePath: "", intro: true })}
+  return `${head({ title: `${site.name} — ${site.fullName}, Graphic Designer | Logos, Branding & Social Media`, description: site.description, ogDescription: `Logos, social media posts and brand identities by ${site.fullName}. Graphic design from Inshify Studio${isPlaceholder(site.city) ? "" : `, ${site.city}`}.`, root, pagePath: "", intro: true, jsonLd: homeLd() })}
 <body id="top">
 <div class="intro-screen" aria-hidden="true"><span class="intro-mark"></span><span class="intro-sub">Graphic design studio</span><span class="intro-bar"></span></div>
 ${header(v2root, true)}
@@ -432,11 +445,12 @@ ${site.experience.map((e) => `          <li><strong>${esc(e.name)}</strong> <spa
         </ul>
       </div>
     </div>
-    <div class="certs" role="group" aria-labelledby="certs-title">
-      <h3 class="dash-pill" id="certs-title" data-reveal>Certificates</h3>
-      <div class="cert-grid">
-${site.certificates.map((c) => `        <a class="cert" href="assets/img/certificates/${c.img}.jpg" data-lightbox data-reveal><span class="cert-media"><img src="assets/img/certificates/${c.img}-xs.jpg" srcset="assets/img/certificates/${c.img}-xs.jpg 480w, assets/img/certificates/${c.img}-sm.jpg 720w" sizes="(max-width: 820px) 90vw, 300px" alt="${esc(`${c.kind}: ${c.title}, ${c.issuer}`)}" loading="lazy" decoding="async"></span><span class="cert-kind">${esc(c.kind)}</span><strong>${esc(c.title)}</strong> <span class="cert-issuer">${esc(c.issuer)}</span></a>`).join("\n")}
+    <div class="cert-strip" data-reveal>
+      <div>
+        <h3 class="dash-pill">Certificates</h3>
+        <p>${site.certificates.map((c) => esc(c.title)).join(" · ")}</p>
       </div>
+      <a class="btn btn-ghost" href="certificates.html" target="_blank" rel="noopener">View certificates ${icon.arrow}</a>
     </div>
   </section>
 
@@ -610,7 +624,7 @@ ${(p.fonts || []).map((f, k) => `      <div class="type-card" data-reveal><span 
     </div>` : ""}
   </section>` : "";
 
-  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
+  return `${head({ title: `${p.title} — ${fullLabel(p)} | ${site.name}`, description: `${p.brief} ${fullLabel(p)} by Insha, Graphic Designer at Inshify Studio.`, ogDescription: firstSentence(p.idea) || `${p.scope} by Insha at Inshify Studio.`, root, ogImage: p.logoSystem ? `assets/img/logos/${p.logoSystem[0].file}.jpg` : p.images[0].src, ogImageAlt: p.alt || `${p.title}: ${p.scope}`, ogType: "article", pagePath: `work/${p.slug}.html`, extraFonts: googleFonts(p.fonts) })}
 <body>
 ${header(v2root, false)}
 <main id="main" class="project">
@@ -663,10 +677,45 @@ fs.rmSync(path.join(OUT, "work"), { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, "work"), { recursive: true });
 fs.writeFileSync(path.join(OUT, "index.html"), home());
 projects.forEach((p, i) => fs.writeFileSync(path.join(OUT, "work", `${p.slug}.html`), projectPage(p, i)));
+// Structured data for search engines: who Insha is and what the site is.
+function homeLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "WebSite", "@id": `${site.url}/#website`, url: `${site.url}/`, name: site.name, description: site.description, inLanguage: "en", publisher: { "@id": `${site.url}/#insha` } },
+      { "@type": "Person", "@id": `${site.url}/#insha`, name: site.fullName, jobTitle: site.role, url: `${site.url}/`, image: `${site.url}/${site.brandCard}`,
+        ...(isPlaceholder(site.email) ? {} : { email: `mailto:${site.email}` }),
+        ...(isPlaceholder(site.city) ? {} : { address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: "PK" } }),
+        worksFor: { "@type": "Organization", name: site.name, url: `${site.url}/` },
+        knowsAbout: ["Graphic design", "Brand identity", "Logo design", "Social media design", "Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign"],
+        sameAs: [site.instagram.url, site.linkedin.url] },
+    ],
+  };
+}
+
+// Certificates live on their own page (opened in a new tab from About) so the home page stays clean.
+function certificatesPage() {
+  const root = "";
+  return `${head({ title: `Certificates — ${site.fullName}, Graphic Designer | ${site.name}`, description: `Certificates and awards earned by ${site.fullName}: ${site.certificates.map((c) => c.title).join(", ")}.`, root, pagePath: "certificates.html" })}
+<body>
+${header(root, false)}
+<main id="main" class="wrap section certs-page">
+  <p class="eyebrow">Certificates</p>
+  <h1 class="nf-title">Trained, tested <span class="light">and recognised</span></h1>
+  <p class="lede">Click a certificate to see it full size.</p>
+  <div class="cert-grid">
+${site.certificates.map((c) => `    <a class="cert" href="assets/img/certificates/${c.img}.jpg" data-lightbox><span class="cert-media"><img src="assets/img/certificates/${c.img}-sm.jpg" alt="${esc(`${c.kind}: ${c.title}, ${c.issuer}`)}" decoding="async"></span><span class="cert-kind">${esc(c.kind)}</span><strong>${esc(c.title)}</strong> <span class="cert-issuer">${esc(c.issuer)}</span></a>`).join("\n")}
+  </div>
+  <div class="actions"><a class="btn btn-primary" href="index.html">Back to portfolio</a></div>
+</main>
+${lightbox}
+${footer(root, root)}`;
+}
+
 // 404 page and sitemap.
 function notFound() {
   const root = site.url ? `${site.url}/` : "/";
-  return `${head({ title: `Page not found | ${site.name}`, description: site.description, ogDescription: "This page doesn't exist. Head back to the Inshify Studio portfolio.", root, ogImage: site.brandCard, pagePath: "404.html" })}
+  return `${head({ title: `Page not found | ${site.name}`, description: site.description, ogDescription: "This page doesn't exist. Head back to the Inshify Studio portfolio.", root, pagePath: "404.html", noindex: true })}
 <body>
 ${header(root, false)}
 <main id="main" class="wrap section">
@@ -678,6 +727,7 @@ ${header(root, false)}
 ${footer(root, root)}`;
 }
 fs.writeFileSync(path.join(OUT, "404.html"), notFound());
+fs.writeFileSync(path.join(OUT, "certificates.html"), certificatesPage());
 // Old project URLs that now live inside another project keep working by forwarding there.
 const moved = { "brand-overview-boards": "simple-logics.html#brand-overview-boards" };
 for (const [from, to] of Object.entries(moved)) {
@@ -695,7 +745,7 @@ for (const [from, to] of Object.entries(moved)) {
 `);
 }
 if (site.url) {
-  const urls = ["", ...projects.map((p) => `work/${p.slug}.html`)].map((u) => `  <url><loc>${site.url}/${u}</loc></url>`);
+  const urls = ["", "certificates.html", ...projects.map((p) => `work/${p.slug}.html`)].map((u) => `  <url><loc>${site.url}/${u}</loc></url>`);
   fs.writeFileSync(path.join(OUT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`);
 }
 console.log(`Built index.html, 404.html and ${projects.length} project pages.`);
