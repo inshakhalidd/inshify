@@ -213,7 +213,7 @@ const endBand = (contactHref) => `<section class="end-band" aria-labelledby="end
 </section>`;
 
 // Badge color per label: paid and internship work, then the service each project falls under.
-const BADGES = { "Paid client work": "paid", Internship: "intern", "Brand identity": "brand", "Logo design": "logo", "Social media design": "social", "Ads & print": "ads" };
+const BADGES = { "Internship work": "intern", "Brand identity": "brand", "Logo design": "logo", "Social media design": "social", "Ads & print": "ads" };
 const badgeKind = (p) => BADGES[p.label] || "brand";
 const firstSentence = (t) => (t ? t.split(/(?<=[.!?])\s+/)[0].trim() : "");
 

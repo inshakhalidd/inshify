@@ -26,7 +26,6 @@ export const site = {
   software: ["Photoshop", "Illustrator", "InDesign"],
   // Real experience shown under the hero (names only, no logos).
   experience: [
-    { name: "E-Rising Trainers", note: "Client work" },
     { name: "Simple Logics", note: "Internship" },
   ],
   // Certificates shown in About (images in assets/img/certificates/; digital copies where one exists).
@@ -40,7 +39,7 @@ export const site = {
 // Filter chips on the work grid. `key` must match a project's `tags`.
 export const filters = [
   { key: "all", label: "All" },
-  { key: "paid", label: "Paid & internship" },
+  { key: "paid", label: "Internship work" },
   { key: "brand", label: "Brand identity" },
   { key: "logos", label: "Logo design" },
   { key: "social", label: "Social media design" },
@@ -56,16 +55,15 @@ export const projects = [
   {
     slug: "e-rising-trainers", scope: "Social media campaign · Carousels · Posters",
     title: "E-Rising Trainers",
-    label: "Paid client work",
-    tags: ["paid"],
+    label: "Social media design",
+    tags: ["social"],
     brief: "Social media campaign, carousels and promotional posters for a training institute.",
     alt: "E-Rising Trainers promotional poster",
   },
   {
     slug: "simple-logics", scope: "Social media posts · Brand overview boards",
     title: "Simple Logics",
-    label: "Internship",
-    sublabel: "Simple Logics",
+    label: "Internship work",
     tags: ["paid"],
     brief: "Social media posts and brand overview boards designed during my internship at Simple Logics.",
     alt: "Simple Logics social media post",
